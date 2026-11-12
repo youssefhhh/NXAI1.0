@@ -1,0 +1,4230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NX AI Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           NX AI STUDIO - CALM OBSIDIAN & EMERALD DESIGN SYSTEM
+           Refined, Eye-Friendly, Spacious, and Minimalist
+           ========================================================================== */
+        :root {
+            --bg-root: #0b0e14;
+            --bg-nav: #0f131c;
+            --bg-card: #141924;
+            --bg-card-hover: #1a2130;
+            --bg-input: #090c12;
+            --bg-pill: rgba(255, 255, 255, 0.05);
+
+            /* Fine Subtle Borders */
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.12);
+            --border-accent: rgba(16, 185, 129, 0.35);
+
+            /* Typography */
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', Consolas, monospace;
+
+            /* Calm Soothing Accents (Zero harsh neons, zero aggressive blues) */
+            --emerald: #10b981;
+            --emerald-soft: rgba(16, 185, 129, 0.12);
+            --emerald-border: rgba(16, 185, 129, 0.3);
+            --amber: #f59e0b;
+            --amber-soft: rgba(245, 158, 11, 0.12);
+            --indigo: #6366f1;
+            --indigo-soft: rgba(99, 102, 241, 0.12);
+            --danger: #ef4444;
+            --danger-soft: rgba(239, 68, 68, 0.12);
+
+            /* Radii & Shadows */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --shadow-elevated: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-root);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-root);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ==========================================================================
+           CUSTOM FRAMELESS IN-APP TITLEBAR
+           ========================================================================== */
+        .app-titlebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 38px;
+            background: rgba(11, 14, 20, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100000; /* Stays above login wrapper and all overlays */
+        }
+
+        .titlebar-drag-area {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 14px;
+            padding-right: 14px;
+            cursor: default;
+        }
+
+        .titlebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .titlebar-logo {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .titlebar-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .titlebar-app-name {
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .titlebar-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: var(--emerald-soft);
+            color: var(--emerald);
+            border: 1px solid var(--emerald-border);
+            letter-spacing: 0.5px;
+        }
+
+        .titlebar-separator {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.75rem;
+        }
+
+        .titlebar-app-desc {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .titlebar-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 3px 10px;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: all 0.25s ease;
+        }
+
+        .status-dot.active {
+            background: var(--emerald);
+            box-shadow: 0 0 8px var(--emerald);
+        }
+
+        .titlebar-actions {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .titlebar-btn {
+            width: 44px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .titlebar-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .titlebar-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        .titlebar-btn.btn-close:hover {
+            background: var(--danger) !important;
+            color: #ffffff !important;
+        }
+
+        /* ==========================================================================
+           MAIN APP CONTAINER & NAVIGATION BAR
+           ========================================================================== */
+        .app-shell {
+            margin-top: 38px;
+            min-height: calc(100vh - 38px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-nav-bar {
+            height: 52px;
+            background: var(--bg-nav);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 38px;
+            z-index: 999;
+        }
+
+        .nav-tabs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            font-size: 0.84rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab-btn svg {
+            width: 15px;
+            height: 15px;
+            stroke-width: 2;
+            transition: stroke 0.2s ease;
+        }
+
+        .nav-tab-btn:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+        }
+
+        .nav-tab-btn.active {
+            background: var(--emerald-soft);
+            color: var(--emerald);
+            border-color: var(--emerald-border);
+            font-weight: 600;
+        }
+
+        .nav-tab-btn.active svg {
+            stroke: var(--emerald);
+        }
+
+        .nav-hardware-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.74rem;
+            color: var(--text-muted);
+        }
+
+        .hw-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
+        }
+
+        .hw-tag strong {
+            color: var(--emerald);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           MAIN CONTENT AREA
+           ========================================================================== */
+        .app-main {
+            flex: 1;
+            padding: 24px;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .tab-view {
+            display: none;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .tab-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           CARDS & PANELS
+           ========================================================================== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-medium);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .card-title svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--emerald);
+        }
+
+        /* ==========================================================================
+           VIEW 1: DASHBOARD
+           ========================================================================== */
+        .dash-hero {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .dash-active-weapon-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(20, 25, 36, 0.9), rgba(15, 19, 28, 0.95));
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-weapon-info {
+            z-index: 2;
+        }
+
+        .dash-weapon-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--emerald);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .dash-weapon-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .dash-weapon-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dash-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .dash-weapon-img-wrap {
+            max-width: 220px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .dash-weapon-img-wrap img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+        }
+
+        .dash-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .dash-stat-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dash-stat-header {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .dash-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            font-family: var(--font-mono);
+        }
+
+        .dash-stat-sub {
+            font-size: 0.72rem;
+            color: var(--emerald);
+            margin-top: 4px;
+        }
+
+        /* Quick Weapon Selector Strip */
+        .quick-weapons-bar {
+            margin-bottom: 24px;
+        }
+
+        .quick-bar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .quick-bar-title {
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-weapons-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+        }
+
+        .quick-weapon-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 12px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-weapon-btn:hover {
+            border-color: var(--border-medium);
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .quick-weapon-btn.active {
+            border-color: var(--emerald);
+            background: var(--emerald-soft);
+        }
+
+        .quick-weapon-btn img {
+            width: 70px;
+            height: 34px;
+            object-fit: contain;
+        }
+
+        .quick-weapon-btn span {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           VIEW 2: NO RECOIL STABILIZER & HUD OVERLAY
+           ========================================================================== */
+        .recoil-master-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .recoil-master-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .recoil-master-text h2 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .recoil-master-text p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .recoil-controls-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Clean Modern Toggle Switch */
+        .toggle-switch-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-medium);
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-switch-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        .toggle-switch-btn.active {
+            background: var(--emerald-soft);
+            color: var(--emerald);
+            border-color: var(--emerald-border);
+        }
+
+        /* HUD Section Card */
+        .hud-overlay-card {
+            background: linear-gradient(135deg, rgba(20, 25, 36, 0.95), rgba(15, 19, 28, 0.98));
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .hud-card-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .hud-card-info p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .hud-actions-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Live HUD Preview Widget */
+        .hud-live-card {
+            background: rgba(12, 14, 18, 0.9);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            position: relative;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .hud-live-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .hud-pill-status {
+            font-size: 0.68rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: var(--emerald-soft);
+            color: var(--emerald);
+            font-family: var(--font-mono);
+        }
+
+        .hud-live-body {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .hud-live-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            font-family: var(--font-mono);
+        }
+
+        .hud-k {
+            color: var(--text-secondary);
+        }
+
+        .hud-v {
+            font-weight: 600;
+        }
+
+        .hud-drag-banner {
+            margin-top: 10px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: var(--amber-soft);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-size: 0.72rem;
+            color: var(--amber);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .recoil-grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 24px;
+        }
+
+        /* Weapons Column */
+        .weapons-column {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .weapons-filter-tabs {
+            display: flex;
+            gap: 6px;
+        }
+
+        .filter-tab {
+            padding: 5px 12px;
+            border-radius: 6px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-tab:hover {
+            color: var(--text-secondary);
+        }
+
+        .filter-tab.active {
+            background: var(--bg-pill);
+            color: #ffffff;
+            border-color: var(--border-medium);
+        }
+
+        .weapon-cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .weapon-item-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .weapon-item-card:hover {
+            border-color: var(--border-medium);
+            background: var(--bg-card-hover);
+        }
+
+        .weapon-item-card.active {
+            border-color: var(--emerald);
+            background: var(--emerald-soft);
+        }
+
+        .weapon-item-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .weapon-item-thumb {
+            width: 75px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .weapon-item-thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .weapon-item-details h4 {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .weapon-item-details span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .weapon-item-pull {
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: var(--emerald);
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: var(--bg-pill);
+        }
+
+        /* Scope Tuning Column */
+        .tuning-column {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .scope-pills-bar {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .scope-pill-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 10px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .scope-pill-btn:hover {
+            border-color: var(--border-medium);
+        }
+
+        .scope-pill-btn.active {
+            border-color: var(--emerald);
+            background: var(--emerald-soft);
+        }
+
+        .scope-pill-name {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .scope-pill-val {
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+        }
+
+        .scope-pill-btn.active .scope-pill-val {
+            color: var(--emerald);
+            font-weight: 600;
+        }
+
+        /* Giant Precision Slider Card */
+        .slider-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+        }
+
+        .slider-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .slider-title {
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .slider-value-display {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--emerald);
+        }
+
+        .slider-track-wrap {
+            margin: 18px 0;
+        }
+
+        .slider-input {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--emerald);
+            box-shadow: 0 0 10px var(--emerald);
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .slider-input::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .slider-actions-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+        }
+
+        .step-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .step-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .step-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--border-medium);
+        }
+
+        .btn-reset {
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-reset:hover {
+            color: #ffffff;
+            border-color: var(--border-medium);
+        }
+
+        /* Scopes Matrix Table */
+        .scopes-matrix-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 18px 22px;
+        }
+
+        .matrix-title {
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .matrix-cell {
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .matrix-scope-name {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .matrix-scope-val {
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           VIEW 3: AIM ASSIST
+           ========================================================================== */
+                /* Inference Engine Switcher (GPU vs CPU) */
+        .device-pill-group {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 3px;
+            gap: 4px;
+        }
+
+        .device-btn {
+            padding: 4px 12px;
+            font-size: 0.76rem;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .device-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .device-btn.active {
+            background: rgba(16, 185, 129, 0.18);
+            color: var(--emerald);
+            border-color: rgba(16, 185, 129, 0.35);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+        }
+
+.aim-hero-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .aim-presets-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .preset-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-card:hover {
+            border-color: var(--border-medium);
+            background: var(--bg-card-hover);
+        }
+
+        .preset-card.active {
+            border-color: var(--indigo);
+            background: var(--indigo-soft);
+        }
+
+        .preset-card h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .preset-card p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .aim-sliders-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .aim-slider-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 18px;
+        }
+
+        .aim-slider-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .aim-slider-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .aim-slider-val {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .bone-selector-card {
+            grid-column: span 2;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 18px;
+        }
+
+        .bones-list {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .bone-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .bone-btn:hover {
+            color: #ffffff;
+            border-color: var(--border-medium);
+        }
+
+        .bone-btn.active {
+            background: var(--indigo-soft);
+            color: var(--indigo);
+            border-color: rgba(99, 102, 241, 0.35);
+        }
+
+        /* Trigger Keys and FOV Color Switchers */
+        .aim-keys-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .key-pill-btn {
+            flex: 1 1 calc(25% - 8px);
+            min-width: 125px;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 0.76rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .key-pill-btn:hover {
+            color: #ffffff;
+            border-color: var(--border-medium);
+        }
+
+        .key-pill-btn.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.45);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .fov-colors-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .color-swatch {
+            flex: 1 1 calc(12.5% - 8px);
+            min-width: 82px;
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 0.74rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .color-swatch:hover {
+            color: #ffffff;
+            border-color: var(--border-medium);
+        }
+
+        .color-swatch.active {
+            border-color: var(--c);
+            color: #ffffff;
+            box-shadow: 0 0 10px var(--c);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .swatch-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .color-custom-btn {
+            flex: 1 1 calc(12.5% - 8px);
+            min-width: 82px;
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-pill);
+            border: 1px dashed var(--border-medium);
+            color: var(--text-secondary);
+            font-size: 0.74rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+
+        .color-custom-btn:hover {
+            color: #ffffff;
+            border-color: var(--emerald);
+        }
+
+        /* ==========================================================================
+           VIEW 4: ABOUT (COMMUNITY & SOCIALS: TIKTOK, TELEGRAM, DISCORD)
+           ========================================================================== */
+        .about-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .about-hero-card {
+            background: linear-gradient(135deg, rgba(20, 25, 36, 0.95), rgba(15, 19, 28, 0.98));
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .about-hero-brand {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .about-logo-large {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: var(--emerald-soft);
+            border: 1px solid var(--emerald-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-logo-large svg {
+            width: 34px;
+            height: 34px;
+            stroke: var(--emerald);
+        }
+
+        .about-title-group h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .about-title-group p {
+            font-size: 0.86rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .about-version-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .version-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            color: #ffffff;
+            font-family: var(--font-mono);
+        }
+
+        .version-status {
+            font-size: 0.74rem;
+            color: var(--emerald);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Social Channels Grid */
+        .socials-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .socials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .social-card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+        }
+
+        .social-card-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .social-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .social-icon-box.tiktok {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        .social-icon-box.telegram {
+            background: rgba(41, 169, 234, 0.15);
+            color: #29b6f6;
+        }
+
+        .social-icon-box.discord {
+            background: rgba(88, 101, 242, 0.15);
+            color: #7289da;
+        }
+
+        .social-icon-box svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .social-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .social-info span {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+        }
+
+        .social-actions-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-social-open {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-pill);
+            border: 1px solid var(--border-medium);
+            color: #ffffff;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.18s ease;
+        }
+
+        .btn-social-open:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-social-copy {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.18s ease;
+        }
+
+        .btn-social-copy:hover {
+            color: #ffffff;
+            border-color: var(--border-medium);
+        }
+
+        .btn-social-copy svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .hotkeys-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .hotkeys-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+        }
+
+        .hotkeys-table tr {
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .hotkeys-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .hotkeys-table td {
+            padding: 12px 6px;
+            font-size: 0.84rem;
+        }
+
+        .key-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .specs-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .specs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.84rem;
+        }
+
+        .spec-label {
+            color: var(--text-muted);
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: #ffffff;
+            font-family: var(--font-mono);
+        }
+
+        /* Toast Container */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast-msg {
+            background: rgba(15, 19, 28, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-medium);
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            font-size: 0.82rem;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-elevated);
+        }
+    
+        /* ==========================================================================
+           AUTHENTICATION LOGIN SCREEN (Obsidian & Emerald Luxury Glass)
+           ========================================================================== */
+        .login-wrapper {
+            position: fixed;
+            top: 38px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 99990;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle 900px at 50% 45%, rgba(16, 185, 129, 0.08), transparent 70%), #07090e;
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s ease;
+        }
+
+        .login-wrapper.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .login-card {
+            position: relative;
+            width: 440px;
+            max-width: 92vw;
+            background: rgba(15, 20, 30, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 38px 32px 30px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 50px rgba(16, 185, 129, 0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.6), transparent);
+        }
+
+        .login-card-glow {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 100px;
+            background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.22), transparent 70%);
+            pointer-events: none;
+        }
+
+        .cyber-corner {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: rgba(16, 185, 129, 0.5);
+            pointer-events: none;
+        }
+        .cyber-corner.top-left { top: 10px; left: 10px; border-top: 2px solid; border-left: 2px solid; }
+        .cyber-corner.top-right { top: 10px; right: 10px; border-top: 2px solid; border-right: 2px solid; }
+        .cyber-corner.bottom-left { bottom: 10px; left: 10px; border-bottom: 2px solid; border-left: 2px solid; }
+        .cyber-corner.bottom-right { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; }
+
+        .login-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--emerald);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .login-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
+        }
+
+        .login-icon-box svg {
+            width: 30px;
+            height: 30px;
+            color: var(--emerald);
+        }
+
+        .login-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .login-subtitle {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            max-width: 320px;
+            line-height: 1.45;
+        }
+
+        .login-input-wrap {
+            width: 100%;
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .login-input {
+            width: 100%;
+            height: 46px;
+            padding: 0 44px 0 42px;
+            background: #090c12;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--emerald);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+        }
+
+        .login-input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .login-card-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 15;
+        }
+
+        .login-card-close:hover {
+            color: #fff;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: scale(1.05);
+        }
+
+        .login-toggle-eye {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .login-toggle-eye:hover {
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.12);
+            border-color: var(--emerald-border);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .login-toggle-eye svg {
+            width: 17px;
+            height: 17px;
+            stroke-width: 2.2;
+        }
+
+        .btn-login-submit {
+            width: 100%;
+            height: 46px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            font-family: var(--font-main);
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-login-submit:hover:not(:disabled) {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-login-submit:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-login-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .login-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: loginSpin 0.7s linear infinite;
+            display: none;
+        }
+
+        @keyframes loginSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .login-status-msg {
+            margin-top: 14px;
+            min-height: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: var(--text-muted);
+        }
+
+        .login-status-msg.status-error {
+            color: var(--danger);
+        }
+
+        .login-status-msg.status-success {
+            color: var(--emerald);
+        }
+
+        .login-status-msg.status-loading {
+            color: var(--amber);
+        }
+
+        .login-footer-links {
+            margin-top: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+        }
+
+        .login-footer-link {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .login-footer-link:hover {
+            color: var(--emerald);
+        }
+
+        .login-footer-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Titlebar User Pill */
+        .user-license-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 3px 10px;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-family: var(--font-mono);
+            cursor: default;
+        }
+
+        .tb-logout-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin-left: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .tb-logout-btn:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.12);
+        }
+    
+        /* ===== Tweaker-Style Floating Toast Notification ===== */
+        .status-container {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100050;
+            width: 100%;
+            max-width: 440px;
+            padding: 0 16px;
+            pointer-events: none;
+        }
+
+        .status-message {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(11, 15, 23, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 13px 18px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5);
+            transform: translateY(-30px) scale(0.97);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            pointer-events: auto;
+        }
+
+        .status-message.show {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .status-icon {
+            font-size: 1.35rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .status-text-wrap {
+            flex: 1;
+            text-align: left;
+        }
+
+        .status-text {
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: #fff;
+        }
+
+        .status-subtext {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        .status-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background: transparent;
+        }
+
+        .status-message.success {
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(16, 185, 129, 0.22);
+        }
+
+        .status-message.success .status-icon {
+            color: var(--emerald);
+        }
+
+        .status-message.error {
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(239, 68, 68, 0.25);
+        }
+
+        .status-message.error .status-icon {
+            color: var(--danger);
+        }
+
+        .status-message.loading {
+            border-color: rgba(14, 165, 233, 0.4);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(14, 165, 233, 0.22);
+        }
+
+        .status-message.loading .status-icon {
+            color: #38bdf8;
+        }
+
+        /* Input Clear Button */
+        .input-clear-btn {
+            position: absolute;
+            right: 46px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            display: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+            z-index: 10;
+        }
+
+        .input-clear-btn.visible {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-clear-btn:hover {
+            color: #fff;
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        /* Login Divider & Social Buttons */
+        .login-divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0 14px;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            width: 100%;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .login-divider span {
+            padding: 0 12px;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .social-button {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 1.15rem;
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .social-button:hover {
+            color: #fff;
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-login-submit.authorized {
+            background: linear-gradient(135deg, #059669, #10b981) !important;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.45) !important;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Floating Toast Notification System (Tweaker Style) -->
+    <div class="status-container">
+        <div id="statusMessage" class="status-message">
+            <div class="status-icon" id="statusIcon"></div>
+            <div class="status-text-wrap">
+                <div class="status-text" id="statusTitle"></div>
+                <div class="status-subtext" id="statusDesc"></div>
+            </div>
+            <div class="status-progress" id="statusProgress"></div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================================================
+         AUTHENTICATION LOGIN OVERLAY (OBSIDIAN & EMERALD LUXURY GLASS)
+         ========================================================================== -->
+    <div class="login-wrapper" id="login-screen">
+        <div class="login-card">
+            <!-- Ambient top glow -->
+            <div class="login-card-glow"></div>
+
+            <!-- Card Direct Close Button -->
+            <button type="button" class="login-card-close" onclick="sendBridge('window_close', {})" title="Close Window">
+                <svg viewBox="0 0 12 12" fill="none" style="width: 11px; height: 11px;">
+                    <path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </button>
+
+            <!-- Cyber Corners -->
+            <div class="cyber-corner top-left"></div>
+            <div class="cyber-corner top-right"></div>
+            <div class="cyber-corner bottom-left"></div>
+            <div class="cyber-corner bottom-right"></div>
+
+            <!-- Security Badge -->
+            <div class="login-badge">
+                <span class="status-dot active"></span>
+                <span>SECURE LICENSE AUTH</span>
+            </div>
+
+            <!-- Luxury AI Shield Icon -->
+            <div class="login-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="M12 8v4" />
+                    <circle cx="12" cy="16" r="1" fill="currentColor" />
+                </svg>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <div class="login-title">NX <span style="color: var(--emerald);">AI</span> STUDIO</div>
+            <div class="login-subtitle">Vision-Assisted Tactical Precision Engine</div>
+
+            <!-- License Key Input Field (License only) -->
+            <div class="login-input-wrap">
+                <svg class="login-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <input type="password" class="login-input" id="login-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" style="padding: 0 74px 0 42px;" />
+                <button type="button" class="input-clear-btn" id="clearBtn" title="Clear License">
+                    <i class="fas fa-times"></i>
+                </button>
+                <button type="button" class="login-toggle-eye" id="btn-toggle-license-eye" onclick="toggleLicenseVisibility()" title="Show/Hide License Key">
+                    <svg id="login-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    <svg id="login-eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; display: none;">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="button" class="btn-login-submit" id="btn-login-submit" onclick="submitLoginKey()" disabled>
+                <span class="login-spinner" id="login-spinner"></span>
+                <i class="fas fa-bolt" id="btn-login-icon" style="margin-right: 6px;"></i>
+                <span id="btn-login-text">ENTER LICENSE KEY</span>
+            </button>
+
+            <!-- Status message -->
+            <div class="login-status-msg" id="login-status-msg">
+                Please enter your license key to continue.
+            </div>
+
+            <div class="login-divider">
+                <span>CONNECT WITH US</span>
+            </div>
+
+            <div class="social-buttons">
+                <a href="https://discord.gg/nxtools" class="social-button" target="_blank" title="Discord" onclick="sendBridge('open_url', {url: 'https://discord.gg/nxtools'})">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="https://t.me/NxStoreofficial" class="social-button" target="_blank" title="Telegram" onclick="sendBridge('open_url', {url: 'https://t.me/NxStoreofficial'})">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@nxgaming_?_r=1&_t=ZS-97KkUAQ5Tj3" class="social-button" target="_blank" title="TikTok" onclick="sendBridge('open_url', {url: 'https://www.tiktok.com/@nxgaming_?_r=1&_t=ZS-97KkUAQ5Tj3'})">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://www.youtube.com/@NXGAMMING_OFFICAL" class="social-button" target="_blank" title="YouTube" onclick="sendBridge('open_url', {url: 'https://www.youtube.com/@NXGAMMING_OFFICAL'})">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+
+            <!-- Footer Details -->
+            <div class="login-footer-links">
+                <a href="https://discord.gg/nxtools" target="_blank" rel="noopener noreferrer" class="login-footer-link" onclick="sendBridge('open_url', {url: 'https://discord.gg/nxtools'})">
+                    <i class="fas fa-lock" style="font-size: 11px;"></i>
+                    <span>Protected by NX Security Engine • v1.0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         CUSTOM FRAMELESS IN-APP TITLEBAR
+         ========================================================================== -->
+    <header class="app-titlebar" id="app-titlebar">
+        <div class="titlebar-drag-area">
+            <div class="titlebar-brand">
+                <div class="titlebar-logo">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2" stroke="#10b981" stroke-width="2" stroke-linejoin="round" />
+                        <polyline points="2 17 12 22 22 17" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <polyline points="2 12 12 17 22 12" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="titlebar-app-name">
+                    <span>NX AI</span>
+                    <span class="titlebar-tag">STUDIO</span>
+                    <span class="titlebar-separator">•</span>
+                    <span class="titlebar-app-desc">Tactical Neural Assistant</span>
+                </div>
+            </div>
+
+            <!-- Central Live Telemetry Status Pill -->
+            <div class="titlebar-status-pill">
+                <span class="status-dot" id="tb-status-dot"></span>
+                <span id="tb-status-text">Ready • F9 Recoil Hotkey</span>
+            </div>
+
+            <!-- User License Status Pill -->
+            <div class="titlebar-status-pill user-license-pill" id="tb-user-pill" style="display: none; margin-left: 8px;">
+                <span class="status-dot" style="background: var(--emerald); box-shadow: 0 0 8px var(--emerald);"></span>
+                <span id="tb-user-sub" style="font-weight: 700; color: #fff; letter-spacing: 0.5px;">PRO</span>
+                <span style="opacity: 0.35;">•</span>
+                <span id="tb-user-exp" style="color: var(--text-secondary);">Active</span>
+                <button type="button" class="tb-logout-btn" id="btn-tb-logout" title="Logout License" onclick="requestLogout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px;">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Window Controls -->
+        <div class="titlebar-actions">
+            <button type="button" class="titlebar-btn" id="btn-win-min" title="Minimize">
+                <svg viewBox="0 0 12 12" fill="none">
+                    <path d="M2 6h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+            </button>
+            <button type="button" class="titlebar-btn" id="btn-win-max" title="Maximize">
+                <svg viewBox="0 0 12 12" fill="none">
+                    <rect x="2" y="2" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2" />
+                </svg>
+            </button>
+            <button type="button" class="titlebar-btn btn-close" id="btn-win-close" title="Close">
+                <svg viewBox="0 0 12 12" fill="none">
+                    <path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         APPLICATION SHELL & NAVIGATION
+         ========================================================================== -->
+    <div class="app-shell">
+        <nav class="app-nav-bar">
+            <div class="nav-tabs">
+                <button class="nav-tab-btn active" id="btn-tab-home" onclick="switchNavTab('home')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.5z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Dashboard
+                </button>
+                <button class="nav-tab-btn" id="btn-tab-recoil" onclick="switchNavTab('recoil')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="8" stroke-linecap="round"/>
+                        <line x1="12" y1="2" x2="12" y2="6"/>
+                        <line x1="12" y1="18" x2="12" y2="22"/>
+                        <line x1="2" y1="12" x2="6" y2="12"/>
+                        <line x1="18" y1="12" x2="22" y2="12"/>
+                    </svg>
+                    No Recoil & HUD
+                </button>
+                <button class="nav-tab-btn" id="btn-tab-aim" onclick="switchNavTab('aim')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Aim Assist
+                </button>
+                <button class="nav-tab-btn" id="btn-tab-about" onclick="switchNavTab('about')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke-linecap="round"/>
+                        <line x1="12" y1="16" x2="12" y2="12" stroke-linecap="round"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8" stroke-linecap="round"/>
+                    </svg>
+                    About & Community
+                </button>
+            </div>
+
+            <div class="nav-hardware-pill">
+                <div class="hw-tag">Vision: <strong>DirectML Ready</strong></div>
+                <div class="hw-tag">Latency: <strong>0.6ms</strong></div>
+            </div>
+        </nav>
+
+        <main class="app-main">
+            <!-- ==============================================================
+                 VIEW 1: DASHBOARD
+                 ============================================================== -->
+            <section id="view-home" class="tab-view active">
+                <div class="dash-hero">
+                    <!-- Active Loadout Card -->
+                    <div class="dash-active-weapon-card">
+                        <div class="dash-weapon-info">
+                            <div class="dash-weapon-label">Active Weapon Profile</div>
+                            <div class="dash-weapon-name" id="dash-current-gun">M416</div>
+                            <div class="dash-weapon-meta">
+                                <span class="dash-pill" id="dash-current-ammo">5.56mm</span>
+                                <span class="dash-pill" id="dash-current-scope" style="color: var(--emerald); font-weight: 600;">3x Scope</span>
+                                <span class="dash-pill" id="dash-current-pull">Pull: 32</span>
+                            </div>
+                        </div>
+                        <div class="dash-weapon-img-wrap">
+                            <img id="dash-weapon-img" src="assets/weapons/M416.png" alt="Weapon">
+                        </div>
+                    </div>
+
+                    <!-- Live Hardware Summary -->
+                    <div class="dash-stats-grid">
+                        <div class="dash-stat-item">
+                            <div class="dash-stat-header">Recoil Stabilizer (F9)</div>
+                            <div class="dash-stat-value" id="dash-recoil-stat" style="color: var(--text-muted);">STANDBY</div>
+                            <div class="dash-stat-sub" id="dash-recoil-sub">Press F9 to arm</div>
+                        </div>
+                        <div class="dash-stat-item">
+                            <div class="dash-stat-header">Floating HUD Overlay</div>
+                            <div class="dash-stat-value" id="dash-hud-stat" style="color: var(--emerald);">ACTIVE</div>
+                            <div class="dash-stat-sub" id="dash-hud-sub">Position: Locked</div>
+                        </div>
+                        <div class="dash-stat-item">
+                            <div class="dash-stat-header">Trigger Mode</div>
+                            <div class="dash-stat-value" style="color: var(--amber);">ADS ONLY</div>
+                            <div class="dash-stat-sub">Right Mouse Button</div>
+                        </div>
+                        <div class="dash-stat-item">
+                            <div class="dash-stat-header">Profiles DB</div>
+                            <div class="dash-stat-value">LOCAL JSON</div>
+                            <div class="dash-stat-sub">auto_calib.json</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Weapon Switcher Strip -->
+                <div class="quick-weapons-bar">
+                    <div class="quick-bar-header">
+                        <div class="quick-bar-title">Quick Select Arsenal</div>
+                    </div>
+                    <div class="quick-weapons-grid" id="quick-weapons-strip">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==============================================================
+                 VIEW 2: NO RECOIL & IN-GAME FLOATING HUD
+                 ============================================================== -->
+            <section id="view-recoil" class="tab-view">
+                <!-- Master Toggle Panel -->
+                <div class="recoil-master-panel">
+                    <div class="recoil-master-left">
+                        <div class="recoil-master-text">
+                            <h2>Hardware Recoil Stabilizer</h2>
+                            <p>Win32 direct mouse micro-compensation loop with auto weapon/scope detection</p>
+                        </div>
+                    </div>
+                    <div class="recoil-controls-wrap">
+                        <button type="button" class="toggle-switch-btn" id="btn-auto-sync" onclick="toggleAutoSyncProfile()">
+                            Auto-Switch UI: <span id="lbl-auto-sync-status">OFF</span>
+                        </button>
+                        <button type="button" class="toggle-switch-btn active" id="btn-scope-only" onclick="toggleScopeOnlyMode()">
+                            ADS Only (RMB)
+                        </button>
+                        <button type="button" class="toggle-switch-btn" id="btn-master-recoil" onclick="toggleRecoilMaster()">
+                            Stabilizer: <span id="lbl-master-recoil-status">OFF</span> [F9]
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Floating HUD Controls Card -->
+                <div class="hud-overlay-card">
+                    <div class="hud-card-info">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; stroke: var(--emerald);">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
+                            </svg>
+                            In-Game Floating HUD (Transparent Telemetry Overlay)
+                        </h3>
+                        <p>Ultra-low latency transparent overlay displaying active weapon, detected scope, and recoil status in real-time. Unlock to freely drag and reposition anywhere on your screen.</p>
+                        <div class="hud-actions-row">
+                            <button type="button" class="toggle-switch-btn active" id="btn-hud-overlay" onclick="toggleHudVisibility()">
+                                HUD Overlay: <span id="lbl-hud-status">ON</span>
+                            </button>
+                            <button type="button" class="toggle-switch-btn" id="btn-hud-lock" onclick="toggleHudLock()">
+                                🔒 HUD Position: <span id="lbl-hud-lock-status">Locked</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Live Interactive HUD Mirror -->
+                    <div class="hud-live-card">
+                        <div class="hud-live-header">
+                            <span>NX VIP / AI IN-GAME HUD</span>
+                            <span class="hud-pill-status" id="hud-preview-state">ACTIVE</span>
+                        </div>
+                        <div class="hud-live-body">
+                            <div class="hud-live-row">
+                                <span class="hud-k">No Recoil:</span>
+                                <span class="hud-v" id="hud-preview-recoil" style="color: var(--danger);">[OFF]</span>
+                            </div>
+                            <div class="hud-live-row">
+                                <span class="hud-k">Profile:</span>
+                                <span class="hud-v" id="hud-preview-profile" style="color: #60a5fa;">[M416 (3x)]</span>
+                            </div>
+                            <div class="hud-live-row">
+                                <span class="hud-k">Position:</span>
+                                <span class="hud-v" style="color: var(--emerald);">[Standing]</span>
+                            </div>
+                            <div class="hud-live-row">
+                                <span class="hud-k">In-Game Detected:</span>
+                                <span class="hud-v" id="hud-preview-detected" style="color: #a78bfa;">[None]</span>
+                            </div>
+                            <div class="hud-live-row">
+                                <span class="hud-k">Status:</span>
+                                <span class="hud-v" id="hud-preview-status" style="color: var(--text-muted);">[STANDBY]</span>
+                            </div>
+                        </div>
+                        <div class="hud-drag-banner" id="hud-drag-banner" style="display: none;">
+                            ✋ HUD Overlay is Unlocked: Click and drag the overlay on your screen to reposition
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2-Column Tuning Layout -->
+                <div class="recoil-grid-layout">
+                    <!-- Left: Weapon Selector -->
+                    <div class="weapons-column">
+                        <div class="weapons-filter-tabs">
+                            <button class="filter-tab active" onclick="filterWeapons('all', this)">All</button>
+                            <button class="filter-tab" onclick="filterWeapons('5.56mm', this)">5.56mm</button>
+                            <button class="filter-tab" onclick="filterWeapons('7.62mm', this)">7.62mm</button>
+                        </div>
+                        <div class="weapon-cards-list" id="weapon-cards-container">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Scope Tuning & Matrix -->
+                    <div class="tuning-column">
+                        <!-- Scope Selector Pills -->
+                        <div class="scope-pills-bar" id="scope-pills-container">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <!-- Big Slider Card -->
+                        <div class="slider-card">
+                            <div class="slider-header">
+                                <div class="slider-title" id="slider-scope-title">Recoil Pull Strength (3x Scope)</div>
+                                <div class="slider-value-display" id="lbl-recoil-val">32</div>
+                            </div>
+                            <div class="slider-track-wrap">
+                                <input type="range" class="slider-input" id="slider-recoil-val" min="0" max="100" value="32" oninput="onRecoilSliderInput(this.value)">
+                            </div>
+                            <div class="slider-actions-row">
+                                <div class="step-btns">
+                                    <button class="step-btn" onclick="adjustRecoilStep(-1)">-</button>
+                                    <button class="step-btn" onclick="adjustRecoilStep(1)">+</button>
+                                </div>
+                                <button class="btn-reset" onclick="resetScopeStock()">Reset to Stock</button>
+                            </div>
+                        </div>
+
+                        <!-- Scopes Matrix Table -->
+                        <div class="scopes-matrix-card">
+                            <div class="matrix-title">All Scopes Pull Overview</div>
+                            <div class="matrix-grid" id="scopes-matrix-container">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==============================================================
+                 VIEW 3: AIM ASSIST
+                 ============================================================== -->
+            <section id="view-aim" class="tab-view">
+                <div class="aim-hero-panel">
+                    <div>
+                        <h2 style="font-size: 1.05rem; font-weight: 700;">AI Neural Target Tracking</h2>
+                        <p style="font-size: 0.78rem; color: var(--text-muted);">DirectML hardware tensor inference target tracking (Silent Background Execution)</p>
+                        <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">Inference Engine:</span>
+                            <div class="device-pill-group">
+                                <button type="button" class="device-btn active" id="btn-device-gpu" onclick="setAimDevice('gpu')" title="DirectML GPU Tensor Hardware Acceleration (Recommended)">
+                                    DirectML GPU
+                                </button>
+                                <button type="button" class="device-btn" id="btn-device-cpu" onclick="setAimDevice('cpu')" title="Multi-Core CPU Execution">
+                                    Multi-Core CPU
+                                </button>
+                            </div>
+                            <span class="chip" id="chip-aim-engine-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; font-weight: 600;">
+                                GPU ACCELERATED
+                            </span>
+                        </div>
+                        <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">FPS Target:</span>
+                            <div class="device-pill-group" id="fps-pill-group">
+                                <button type="button" class="device-btn fps-btn" data-fps="30" onclick="setAimFps(30)" title="Low CPU usage">30 FPS</button>
+                                <button type="button" class="device-btn fps-btn active" data-fps="40" onclick="setAimFps(40)" title="Solid 40 FPS (Recommended)">40 FPS</button>
+                                <button type="button" class="device-btn fps-btn" data-fps="60" onclick="setAimFps(60)" title="Smooth 60 FPS">60 FPS</button>
+                                <button type="button" class="device-btn fps-btn" data-fps="90" onclick="setAimFps(90)" title="High refresh 90 FPS">90 FPS</button>
+                                <button type="button" class="device-btn fps-btn" data-fps="0" onclick="setAimFps(0)" title="Unlimited Max FPS">Max</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <button type="button" class="toggle-switch-btn active" id="btn-toggle-fov-overlay" onclick="toggleFovScreenOverlay()">
+                            Screen FOV: <span id="lbl-fov-overlay-status">ON</span>
+                        </button>
+                        <button type="button" class="toggle-switch-btn" id="btn-toggle-aim-window" onclick="toggleAimPreviewWindow()">
+                            AI Window: <span id="lbl-aim-window-status">OFF</span>
+                        </button>
+                        <button type="button" class="toggle-switch-btn" id="btn-master-aim" onclick="toggleAimMasterButton()">
+                            Aim Assist: <span id="lbl-master-aim-status">OFF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Presets -->
+                <div class="aim-presets-grid">
+                    <div class="preset-card" id="preset-smooth" onclick="applyAimPreset('smooth')">
+                        <h4>Legit Smooth</h4>
+                        <p>Human-like gentle pull, low speed, high safety</p>
+                    </div>
+                    <div class="preset-card active" id="preset-balanced" onclick="applyAimPreset('balanced')">
+                        <h4>Balanced Comp</h4>
+                        <p>Moderate assist speed for competitive sprays</p>
+                    </div>
+                    <div class="preset-card" id="preset-snappy" onclick="applyAimPreset('snappy')">
+                        <h4>Tactical Snappy</h4>
+                        <p>Rapid micro-flick target acquisition</p>
+                    </div>
+                </div>
+
+                <!-- Sliders -->
+                <div class="aim-sliders-grid">
+                    <div class="aim-slider-item">
+                        <div class="aim-slider-top">
+                            <span class="aim-slider-label">Sensitivity Multiplier</span>
+                            <span class="aim-slider-val" id="val-sens">1.8x</span>
+                        </div>
+                        <input type="range" class="slider-input" id="slider-sens" min="0.5" max="3.5" step="0.1" value="1.8" oninput="onSensChange(this.value)">
+                    </div>
+
+                    <div class="aim-slider-item">
+                        <div class="aim-slider-top">
+                            <span class="aim-slider-label">Smoothing Factor</span>
+                            <span class="aim-slider-val" id="val-smooth">15.0</span>
+                        </div>
+                        <input type="range" class="slider-input" id="slider-smooth" min="5" max="30" step="1" value="15" oninput="onSmoothChange(this.value)">
+                    </div>
+
+                    <div class="aim-slider-item">
+                        <div class="aim-slider-top">
+                            <span class="aim-slider-label">FOV Search Radius</span>
+                            <span class="aim-slider-val" id="val-fov">44 px</span>
+                        </div>
+                        <input type="range" class="slider-input" id="slider-fov" min="20" max="150" step="2" value="44" oninput="onFovChange(this.value)">
+                    </div>
+
+                    <div class="aim-slider-item">
+                        <div class="aim-slider-top">
+                            <span class="aim-slider-label">Compensation Step Speed</span>
+                            <span class="aim-slider-val" id="val-step">60 ms</span>
+                        </div>
+                        <input type="range" class="slider-input" id="slider-step" min="10" max="100" step="5" value="60" oninput="onStepChange(this.value)">
+                    </div>
+
+                    <div class="aim-slider-item">
+                        <div class="aim-slider-top">
+                            <span class="aim-slider-label">FOV Horizontal Position (Offset X)</span>
+                            <span class="aim-slider-val" id="val-fov-x">0 px</span>
+                        </div>
+                        <input type="range" class="slider-input" min="-500" max="500" step="1" value="0" id="slider-fov-x" oninput="onFovOffsetXChange(this.value)">
+                    </div>
+
+                    <div class="aim-slider-item">
+                        <div class="aim-slider-top">
+                            <span class="aim-slider-label">FOV Vertical Position (Offset Y)</span>
+                            <span class="aim-slider-val" id="val-fov-y">0 px</span>
+                        </div>
+                        <input type="range" class="slider-input" min="-500" max="500" step="1" value="0" id="slider-fov-y" oninput="onFovOffsetYChange(this.value)">
+                    </div>
+
+                    <!-- Tactical FOV Directional Nudge Pad & Overlay Controls -->
+                    <div style="grid-column: span 2; background: rgba(0,0,0,0.3); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 16px 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+                        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px;">FOV Direct Nudge Control:</span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">Real-time hardware overlay repositioning</span>
+                            </div>
+                            
+                            <!-- D-Pad Directional Arrows -->
+                            <div style="display: inline-grid; grid-template-columns: repeat(3, 44px); grid-gap: 5px; justify-items: center; align-items: center;">
+                                <div></div>
+                                <button type="button" class="toggle-switch-btn" style="padding: 0; width: 44px; height: 36px; font-size: 1rem; font-weight: bold;" onclick="nudgeFov(0, -20)" title="Up 20px">&#9650;</button>
+                                <div></div>
+                                <button type="button" class="toggle-switch-btn" style="padding: 0; width: 44px; height: 36px; font-size: 1rem; font-weight: bold;" onclick="nudgeFov(-20, 0)" title="Left 20px">&#9664;</button>
+                                <button type="button" class="toggle-switch-btn" style="padding: 0; width: 44px; height: 36px; font-size: 0.85rem; font-weight: 800; color: var(--emerald);" onclick="resetFovCenter()" title="Center (0,0)">&#9679;</button>
+                                <button type="button" class="toggle-switch-btn" style="padding: 0; width: 44px; height: 36px; font-size: 1rem; font-weight: bold;" onclick="nudgeFov(20, 0)" title="Right 20px">&#9654;</button>
+                                <div></div>
+                                <button type="button" class="toggle-switch-btn" style="padding: 0; width: 44px; height: 36px; font-size: 1rem; font-weight: bold;" onclick="nudgeFov(0, 20)" title="Down 20px">&#9660;</button>
+                                <div></div>
+                            </div>
+
+                            <!-- Fast Jump Shortcuts -->
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" class="toggle-switch-btn" style="padding: 6px 12px; font-size: 0.76rem;" onclick="nudgeFov(-50, 0)" title="Left 50px">&laquo; -50px</button>
+                                <button type="button" class="toggle-switch-btn" style="padding: 6px 12px; font-size: 0.76rem;" onclick="nudgeFov(50, 0)" title="Right 50px">+50px &raquo;</button>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                            <button type="button" class="toggle-switch-btn active" id="btn-toggle-fov-overlay" style="padding: 9px 18px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px;" onclick="toggleFovScreenOverlay()">
+                                <svg style="width:15px; height:15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                                Screen FOV Ring: <span id="lbl-fov-overlay-status" style="font-weight: 700; color: var(--emerald);">VISIBLE</span>
+                            </button>
+                            <button type="button" class="toggle-switch-btn" style="padding: 9px 18px; font-size: 0.8rem; display: flex; align-items: center; gap: 6px;" onclick="resetFovCenter()">
+                                <svg style="width:14px; height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                                Reset Center (0, 0)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bone-selector-card">
+                        <div class="aim-slider-label">Target Locking Bone</div>
+                        <div class="bones-list">
+                            <div class="bone-btn" id="bone-btn-head" onclick="selectTargetBone('head')">Head</div>
+                            <div class="bone-btn" id="bone-btn-neck" onclick="selectTargetBone('neck')">Neck</div>
+                            <div class="bone-btn active" id="bone-btn-chest" onclick="selectTargetBone('chest')">Upper Chest</div>
+                            <div class="bone-btn" id="bone-btn-pelvis" onclick="selectTargetBone('pelvis')">Pelvis</div>
+                        </div>
+                    </div>
+
+                    <!-- Aim Trigger Key Selector -->
+                    <div class="bone-selector-card" style="margin-top: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div class="aim-slider-label">Aim Assist Trigger Key (Mouse / Keyboard)</div>
+                                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Select the button or hotkey that activates tracking and mouse compensation</div>
+                            </div>
+                            <span class="chip" id="chip-aim-key-badge" style="color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; font-size: 0.72rem; padding: 2px 8px;">RIGHT CLICK</span>
+                        </div>
+                        <div class="aim-keys-list">
+                            <button type="button" class="key-pill-btn active" id="key-btn-RBUTTON_ONLY" onclick="setAimKey('RBUTTON_ONLY')">Right Click (Scope)</button>
+                            <button type="button" class="key-pill-btn" id="key-btn-LBUTTON_ONLY" onclick="setAimKey('LBUTTON_ONLY')">Left Click (Fire)</button>
+                            <button type="button" class="key-pill-btn" id="key-btn-RBUTTON_AND_LBUTTON" onclick="setAimKey('RBUTTON_AND_LBUTTON')">Scope or Fire (Both)</button>
+                            <button type="button" class="key-pill-btn" id="key-btn-XBUTTON1" onclick="setAimKey('XBUTTON1')">Mouse 4 (Side Back)</button>
+                            <button type="button" class="key-pill-btn" id="key-btn-XBUTTON2" onclick="setAimKey('XBUTTON2')">Mouse 5 (Side Forward)</button>
+                            <button type="button" class="key-pill-btn" id="key-btn-ALT" onclick="setAimKey('ALT')">Left Alt Key</button>
+                            <button type="button" class="key-pill-btn" id="key-btn-SHIFT" onclick="setAimKey('SHIFT')">Shift Key</button>
+                            <button type="button" class="key-pill-btn" id="key-btn-ALWAYS" onclick="setAimKey('ALWAYS')">Always Active (Auto)</button>
+                        </div>
+                    </div>
+
+                    <!-- FOV Overlay Color Picker -->
+                    <div class="bone-selector-card" style="margin-top: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div class="aim-slider-label">FOV Circle Overlay Color</div>
+                                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Live transparent on-screen FOV ring & crosshair center color</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div id="fov-color-preview-dot" style="width: 14px; height: 14px; border-radius: 50%; background: #00FFCC; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 0 10px #00FFCC;"></div>
+                                <span class="chip" id="chip-fov-color-val" style="font-family: monospace; font-size: 0.72rem; color: #00FFCC; font-weight: 700; border: 1px solid rgba(0, 255, 204, 0.3); padding: 2px 8px;">#00FFCC</span>
+                            </div>
+                        </div>
+                        <div class="fov-colors-list">
+                            <div class="color-swatch active" data-color="#00FFCC" style="--c: #00FFCC;" onclick="setAimColor('#00FFCC')" title="Electric Cyan">
+                                <span class="swatch-dot" style="background: #00FFCC;"></span> Cyan
+                            </div>
+                            <div class="color-swatch" data-color="#00FF66" style="--c: #00FF66;" onclick="setAimColor('#00FF66')" title="Neon Emerald">
+                                <span class="swatch-dot" style="background: #00FF66;"></span> Green
+                            </div>
+                            <div class="color-swatch" data-color="#FF0055" style="--c: #FF0055;" onclick="setAimColor('#FF0055')" title="Crimson Ruby">
+                                <span class="swatch-dot" style="background: #FF0055;"></span> Red
+                            </div>
+                            <div class="color-swatch" data-color="#B026FF" style="--c: #B026FF;" onclick="setAimColor('#B026FF')" title="Cyber Purple">
+                                <span class="swatch-dot" style="background: #B026FF;"></span> Purple
+                            </div>
+                            <div class="color-swatch" data-color="#FFB700" style="--c: #FFB700;" onclick="setAimColor('#FFB700')" title="Amber Gold">
+                                <span class="swatch-dot" style="background: #FFB700;"></span> Gold
+                            </div>
+                            <div class="color-swatch" data-color="#00BFFF" style="--c: #00BFFF;" onclick="setAimColor('#00BFFF')" title="Sky Blue">
+                                <span class="swatch-dot" style="background: #00BFFF;"></span> Blue
+                            </div>
+                            <div class="color-swatch" data-color="#FFFFFF" style="--c: #FFFFFF;" onclick="setAimColor('#FFFFFF')" title="Pure White">
+                                <span class="swatch-dot" style="background: #FFFFFF;"></span> White
+                            </div>
+                            <label class="color-custom-btn" title="Choose Custom Hex Color">
+                                <input type="color" id="input-custom-fov-color" value="#00FFCC" style="opacity: 0; position: absolute; width: 0; height: 0;" onchange="setAimColor(this.value)">
+                                <svg style="width:13px; height:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+                                Custom
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==============================================================
+                 VIEW 4: ABOUT & OFFICIAL SOCIALS (TIKTOK, TELEGRAM, DISCORD)
+                 ============================================================== -->
+            <section id="view-about" class="tab-view">
+                <div class="about-wrap">
+                    <!-- Hero Banner -->
+                    <div class="about-hero-card">
+                        <div class="about-hero-brand">
+                            <div class="about-logo-large">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                                    <polyline points="2 17 12 22 22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <polyline points="2 12 12 17 22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div class="about-title-group">
+                                <h2>NX AI STUDIO</h2>
+                                <p>Hardware Neural Vision Recoil Compensation & Target Tracking System</p>
+                            </div>
+                        </div>
+                        <div class="about-version-badge">
+                            <div class="version-tag">v4.5.0 STABLE</div>
+                            <div class="version-status">
+                                <span class="status-dot active"></span>
+                                Engine Calibrated & Verified
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Official Social Channels (TikTok, Telegram, Discord) -->
+                    <div class="socials-section">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke-width="2"/>
+                            </svg>
+                            Official Community & Social Channels
+                        </div>
+                        <div class="socials-grid">
+                            <!-- TikTok Card -->
+                            <div class="social-card">
+                                <div class="social-card-top">
+                                    <div class="social-icon-box tiktok">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.46 6.28 6.28 0 0 0 1.89-4.46V8.75a8.28 8.28 0 0 0 4.88 1.58V6.89a4.85 4.85 0 0 1-1-.2z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="social-info">
+                                        <h4>TikTok</h4>
+                                        <span>@nxgaming.nx • Tutorials & Gameplay Clips</span>
+                                    </div>
+                                </div>
+                                <div class="social-actions-row">
+                                    <button type="button" class="btn-social-open" onclick="openExternalUrl('https://www.tiktok.com/@nxgaming.nx?_r=1&_t=ZS-96muKj3Ks9V')">
+                                        Open TikTok
+                                    </button>
+                                    <button type="button" class="btn-social-copy" title="Copy Link" onclick="copyToClipboard('https://www.tiktok.com/@nxgaming.nx?_r=1&_t=ZS-96muKj3Ks9V', 'TikTok link copied!')">
+                                        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Telegram Card -->
+                            <div class="social-card">
+                                <div class="social-card-top">
+                                    <div class="social-icon-box telegram">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="social-info">
+                                        <h4>Telegram</h4>
+                                        <span>@nxtools • Official Updates & Configs</span>
+                                    </div>
+                                </div>
+                                <div class="social-actions-row">
+                                    <button type="button" class="btn-social-open" onclick="openExternalUrl('https://t.me/nxtools')">
+                                        Join Telegram
+                                    </button>
+                                    <button type="button" class="btn-social-copy" title="Copy Link" onclick="copyToClipboard('https://t.me/nxtools', 'Telegram link copied!')">
+                                        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Discord Card -->
+                            <div class="social-card">
+                                <div class="social-card-top">
+                                    <div class="social-icon-box discord">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="social-info">
+                                        <h4>Discord</h4>
+                                        <span>NX Tools Community • Live Support & Rooms</span>
+                                    </div>
+                                </div>
+                                <div class="social-actions-row">
+                                    <button type="button" class="btn-social-open" onclick="openExternalUrl('https://discord.gg/nxtools')">
+                                        Join Discord
+                                    </button>
+                                    <button type="button" class="btn-social-copy" title="Copy Link" onclick="copyToClipboard('https://discord.gg/nxtools', 'Discord link copied!')">
+                                        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-grid">
+                        <!-- Hotkeys Reference Guide -->
+                        <div class="hotkeys-card">
+                            <div class="card-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"/>
+                                    <line x1="6" y1="8" x2="6.01" y2="8" stroke-width="2"/>
+                                    <line x1="10" y1="8" x2="10.01" y2="8" stroke-width="2"/>
+                                    <line x1="14" y1="8" x2="14.01" y2="8" stroke-width="2"/>
+                                    <line x1="18" y1="8" x2="18.01" y2="8" stroke-width="2"/>
+                                </svg>
+                                Hotkeys & Tactical Controls
+                            </div>
+                            <table class="hotkeys-table">
+                                <tr>
+                                    <td><span class="key-badge">F9</span></td>
+                                    <td><strong>Master Recoil Toggle</strong> (Enable / Disable Stabilizer)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="key-badge">Right Click (RMB)</span></td>
+                                    <td><strong>Auto ADS Scope Trigger</strong> (Stabilize only when aiming)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="key-badge">Left Click (LMB)</span></td>
+                                    <td><strong>Firing Compensation Loop</strong> (Precision micro-pull active)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="key-badge">1 / 2</span></td>
+                                    <td><strong>Primary / Secondary Slot Switch</strong> (Auto weapon sync)</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- System Architecture & Security -->
+                        <div class="specs-card">
+                            <div class="card-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <rect x="2" y="2" width="20" height="8" rx="2" stroke-width="2"/>
+                                    <rect x="2" y="14" width="20" height="8" rx="2" stroke-width="2"/>
+                                    <line x1="6" y1="6" x2="6.01" y2="6" stroke-width="2"/>
+                                    <line x1="6" y1="18" x2="6.01" y2="18" stroke-width="2"/>
+                                </svg>
+                                Engine Specs & Security
+                            </div>
+                            <div class="specs-list">
+                                <div class="spec-item">
+                                    <span class="spec-label">Inference Engine:</span>
+                                    <span class="spec-value">DirectML Hardware Acceleration</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Screen Capture:</span>
+                                    <span class="spec-value">D3D11 Desktop Duplication (0ms)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Input Latency:</span>
+                                    <span class="spec-value">&lt; 0.5 ms SendInput Win32</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Resolution Scaling:</span>
+                                    <span class="spec-value">Multi-DPI 1080p / 2K / 4K Ultrawide</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Offline Security:</span>
+                                    <span class="spec-value" style="color: var(--emerald);">100% Local / Zero Telemetry</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <script>
+        /* ==========================================================================
+           WEAPONS & SCOPES CONFIGURATION DATABASE
+           ========================================================================== */
+        const WEAPONS_DB = {
+            'M416': {
+                name: 'M416',
+                ammo: '5.56mm',
+                img: 'assets/weapons/M416.png',
+                desc: 'Tactical 5.56 AR • Laser accuracy',
+                scopes: { 'Iron': 14, 'Red Dot': 18, '2x': 24, '3x': 32, '4x': 38, '6x': 48 }
+            },
+            'AKM': {
+                name: 'AKM',
+                ammo: '7.62mm',
+                img: 'assets/weapons/AKM.png',
+                desc: 'Heavy 7.62 AR • High kinetic punch',
+                scopes: { 'Iron': 22, 'Red Dot': 28, '2x': 36, '3x': 44, '4x': 52, '6x': 64 }
+            },
+            'Beryl M762': {
+                name: 'Beryl M762',
+                ammo: '7.62mm',
+                img: 'assets/weapons/m762.png',
+                desc: 'Rapid 7.62 AR • Extreme recoil',
+                scopes: { 'Iron': 24, 'Red Dot': 30, '2x': 38, '3x': 48, '4x': 56, '6x': 68 }
+            },
+            'SCAR-L': {
+                name: 'SCAR-L',
+                ammo: '5.56mm',
+                img: 'assets/weapons/SCAR-L.png',
+                desc: 'Balanced 5.56 AR • Consistent spray',
+                scopes: { 'Iron': 12, 'Red Dot': 16, '2x': 22, '3x': 30, '4x': 36, '6x': 46 }
+            },
+            'AUG A3': {
+                name: 'AUG A3',
+                ammo: '5.56mm',
+                img: 'assets/weapons/AUG.png',
+                desc: 'Crate Bullpup • Pinpoint stability',
+                scopes: { 'Iron': 10, 'Red Dot': 14, '2x': 20, '3x': 26, '4x': 32, '6x': 42 }
+            },
+            'Groza': {
+                name: 'Groza',
+                ammo: '7.62mm',
+                img: 'assets/weapons/Groza.png',
+                desc: 'Crate 7.62 Beast • Rapid shredder',
+                scopes: { 'Iron': 20, 'Red Dot': 26, '2x': 34, '3x': 42, '4x': 50, '6x': 60 }
+            },
+            'MG3': {
+                name: 'MG3',
+                ammo: '7.62mm',
+                img: 'assets/weapons/MG3.png',
+                desc: 'Squad LMG • 990 RPM Suppression',
+                scopes: { 'Iron': 18, 'Red Dot': 24, '2x': 32, '3x': 40, '4x': 48, '6x': 58 }
+            }
+        };
+
+        const SCOPES_LIST = ['Iron', 'Red Dot', '2x', '3x', '4x', '6x'];
+
+        /* Reactive App State */
+        const state = {
+            currentTab: 'home',
+            recoilMaster: false,
+            scopeOnly: true,
+            detectedWeapon: 'None',
+            detectedScope: 'None',
+            autoSyncProfile: false,
+            hudOverlay: true,
+            hudLocked: true,
+            currentWeapon: 'M416',
+            currentScope: '3x',
+            currentFilter: 'all',
+            aimMaster: false,
+            aimWindow: false,
+            fovOverlay: true,
+            fovOffsetX: 0,
+            fovOffsetY: 0,
+            preset: 'balanced',
+            targetBone: 'chest',
+            sens: 1.8,
+            smooth: 15.0,
+            stepSpeed: 60,
+            fov: 44,
+            device: 'gpu',
+            targetFps: 40,
+            aimKey: 'RBUTTON_ONLY',
+            fovColor: '#00FFCC'
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initTitlebarControls();
+            renderQuickWeaponsStrip();
+            renderWeaponCards();
+            renderScopePills();
+            renderScopesMatrix();
+            loadCachedAimSettings();
+            renderAimSettingsUI();
+            syncAllUI();
+        });
+
+        /* Titlebar Window Controls & Native Drag */
+        function initTitlebarControls() {
+            const titlebar = document.getElementById('app-titlebar');
+            if (titlebar) {
+                titlebar.addEventListener('mousedown', (e) => {
+                    if (e.target.closest('.titlebar-btn') || e.target.closest('button')) return;
+                    if (e.button === 0) {
+                        sendBridge('window_drag', {});
+                    }
+                });
+                titlebar.addEventListener('dblclick', (e) => {
+                    if (e.target.closest('.titlebar-btn') || e.target.closest('button')) return;
+                    sendBridge('window_maximize', {});
+                });
+            }
+
+            document.getElementById('btn-win-min')?.addEventListener('click', () => sendBridge('window_minimize', {}));
+            document.getElementById('btn-win-max')?.addEventListener('click', () => sendBridge('window_maximize', {}));
+            document.getElementById('btn-win-close')?.addEventListener('click', () => sendBridge('window_close', {}));
+        }
+
+        /* Navigation Tab Switching */
+        function switchNavTab(tabName) {
+            state.currentTab = tabName;
+            document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+
+            const view = document.getElementById(`view-${tabName}`);
+            const btn = document.getElementById(`btn-tab-${tabName}`);
+            if (view) view.classList.add('active');
+            if (btn) btn.classList.add('active');
+        }
+
+        /* Quick Weapon Selector Strip (Dashboard) */
+        function renderQuickWeaponsStrip() {
+            const container = document.getElementById('quick-weapons-strip');
+            if (!container) return;
+            container.innerHTML = '';
+
+            Object.keys(WEAPONS_DB).forEach(key => {
+                const gun = WEAPONS_DB[key];
+                const btn = document.createElement('div');
+                btn.className = `quick-weapon-btn ${key === state.currentWeapon ? 'active' : ''}`;
+                btn.id = `quick-btn-${key.replace(/\s+/g, '-')}`;
+                btn.onclick = () => selectWeapon(key);
+                btn.innerHTML = `
+                    <img src="${gun.img}" alt="${gun.name}">
+                    <span>${gun.name}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        /* Weapon Selection Cards (No Recoil Tab) */
+        function renderWeaponCards() {
+            const container = document.getElementById('weapon-cards-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            Object.keys(WEAPONS_DB).forEach(key => {
+                const gun = WEAPONS_DB[key];
+                if (state.currentFilter !== 'all' && gun.ammo !== state.currentFilter) {
+                    return;
+                }
+
+                const card = document.createElement('div');
+                card.className = `weapon-item-card ${key === state.currentWeapon ? 'active' : ''}`;
+                card.id = `weapon-card-${key.replace(/\s+/g, '-')}`;
+                card.onclick = () => selectWeapon(key);
+
+                const currentPull = gun.scopes[state.currentScope] || 30;
+                card.innerHTML = `
+                    <div class="weapon-item-left">
+                        <div class="weapon-item-thumb">
+                            <img src="${gun.img}" alt="${gun.name}">
+                        </div>
+                        <div class="weapon-item-details">
+                            <h4>${gun.name}</h4>
+                            <span>${gun.ammo} • ${gun.desc}</span>
+                        </div>
+                    </div>
+                    <div class="weapon-item-pull">${currentPull}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterWeapons(filter, el) {
+            state.currentFilter = filter;
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            if (el) el.classList.add('active');
+            renderWeaponCards();
+        }
+
+        /* Scope Pills (No Recoil Tab) */
+        function renderScopePills() {
+            const container = document.getElementById('scope-pills-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const gun = WEAPONS_DB[state.currentWeapon];
+            SCOPES_LIST.forEach(sc => {
+                const val = (gun && gun.scopes[sc]) ? gun.scopes[sc] : 20;
+                const pill = document.createElement('div');
+                pill.className = `scope-pill-btn ${sc === state.currentScope ? 'active' : ''}`;
+                pill.id = `scope-pill-${sc.replace(/\s+/g, '-')}`;
+                pill.onclick = () => selectScope(sc);
+                pill.innerHTML = `
+                    <div class="scope-pill-name">${sc}</div>
+                    <div class="scope-pill-val">${val}</div>
+                `;
+                container.appendChild(pill);
+            });
+        }
+
+        /* Scopes Matrix Overview */
+        function renderScopesMatrix() {
+            const container = document.getElementById('scopes-matrix-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const gun = WEAPONS_DB[state.currentWeapon];
+            if (!gun) return;
+
+            SCOPES_LIST.forEach(sc => {
+                const val = gun.scopes[sc] || 20;
+                const cell = document.createElement('div');
+                cell.className = 'matrix-cell';
+                cell.innerHTML = `
+                    <span class="matrix-scope-name">${sc}</span>
+                    <span class="matrix-scope-val" id="matrix-val-${sc.replace(/\s+/g, '-')}">${val}</span>
+                `;
+                container.appendChild(cell);
+            });
+        }
+
+        function normalizeUiWeapon(name) {
+            if (!name) return 'M416';
+            const lower = name.toLowerCase().trim();
+            if (lower === 'm416' || lower === 'm4') return 'M416';
+            if (lower === 'akm') return 'AKM';
+            if (lower === 'm762' || lower.includes('beryl')) return 'Beryl M762';
+            if (lower === 'scar' || lower.includes('scar')) return 'SCAR-L';
+            if (lower === 'aug') return 'AUG A3';
+            if (lower === 'groza') return 'Groza';
+            if (lower === 'mg3') return 'MG3';
+            return name;
+        }
+
+        function normalizeUiScope(sc) {
+            if (!sc) return '3x';
+            const lower = sc.toLowerCase().trim();
+            if (lower === 'iron') return 'Iron';
+            if (lower === 'red' || lower === 'holo' || lower === 'red dot') return 'Red Dot';
+            if (lower === '2x') return '2x';
+            if (lower === '3x') return '3x';
+            if (lower === '4x') return '4x';
+            if (lower === '6x') return '6x';
+            return sc;
+        }
+
+        function selectWeapon(gunKey) {
+            gunKey = normalizeUiWeapon(gunKey);
+            if (!WEAPONS_DB[gunKey]) return;
+            state.currentWeapon = gunKey;
+
+            renderQuickWeaponsStrip();
+            renderWeaponCards();
+            renderScopePills();
+            renderScopesMatrix();
+            syncAllUI();
+
+            sendBridge('select_weapon', { weapon: gunKey });
+        }
+
+        function selectScope(sc) {
+            sc = normalizeUiScope(sc);
+            state.currentScope = sc;
+
+            renderScopePills();
+            syncAllUI();
+
+            sendBridge('select_scope', { scope: sc });
+        }
+
+        function syncAllUI() {
+            const currentPull = WEAPONS_DB[state.currentWeapon].scopes[state.currentScope] || 32;
+
+            // Slider & display
+            const slider = document.getElementById('slider-recoil-val');
+            const lbl = document.getElementById('lbl-recoil-val');
+            const title = document.getElementById('slider-scope-title');
+
+            if (slider) slider.value = currentPull;
+            if (lbl) lbl.textContent = currentPull;
+            if (title) title.textContent = `Recoil Pull Strength (${state.currentScope})`;
+
+            // Dashboard hero card
+            const dGun = document.getElementById('dash-current-gun');
+            const dAmmo = document.getElementById('dash-current-ammo');
+            const dScope = document.getElementById('dash-current-scope');
+            const dPull = document.getElementById('dash-current-pull');
+            const dImg = document.getElementById('dash-weapon-img');
+
+            if (dGun) dGun.textContent = state.currentWeapon;
+            if (dAmmo) dAmmo.textContent = WEAPONS_DB[state.currentWeapon].ammo;
+            if (dScope) dScope.textContent = `${state.currentScope} Scope`;
+            if (dPull) dPull.textContent = `Pull: ${currentPull}`;
+            if (dImg) dImg.src = WEAPONS_DB[state.currentWeapon].img;
+
+            // HUD Preview Widget Mirror
+            const hudProfile = document.getElementById('hud-preview-profile');
+            if (hudProfile) hudProfile.textContent = `[${state.currentWeapon} (${state.currentScope})]`;
+
+            // Matrix cells
+            SCOPES_LIST.forEach(sc => {
+                const el = document.getElementById(`matrix-val-${sc.replace(/\s+/g, '-')}`);
+                if (el) el.textContent = WEAPONS_DB[state.currentWeapon].scopes[sc];
+            });
+        }
+
+        function onRecoilSliderInput(val) {
+            const intVal = parseInt(val);
+            WEAPONS_DB[state.currentWeapon].scopes[state.currentScope] = intVal;
+            syncAllUI();
+
+            sendBridge('change_recoil_pull', { weapon: state.currentWeapon, scope: state.currentScope, pull: intVal });
+            sendBridge('change_recoil_strength', { value: intVal });
+        }
+
+        function adjustRecoilStep(delta) {
+            let current = WEAPONS_DB[state.currentWeapon].scopes[state.currentScope] || 30;
+            current = Math.max(0, Math.min(100, current + delta));
+            onRecoilSliderInput(current);
+        }
+
+        function resetScopeStock() {
+            const defaults = { 'Iron': 14, 'Red Dot': 18, '2x': 24, '3x': 32, '4x': 38, '6x': 48 };
+            const defVal = defaults[state.currentScope] || 30;
+            onRecoilSliderInput(defVal);
+            notifyToast(`Reset ${state.currentScope} to stock (${defVal})`);
+        }
+
+        function toggleRecoilMaster() {
+            state.recoilMaster = !state.recoilMaster;
+            window.setRecoilActive(state.recoilMaster);
+            sendBridge('toggle_recoil_master', { active: state.recoilMaster });
+        }
+
+        function toggleScopeOnlyMode() {
+            state.scopeOnly = !state.scopeOnly;
+            const btn = document.getElementById('btn-scope-only');
+            if (btn) {
+                btn.className = `toggle-switch-btn ${state.scopeOnly ? 'active' : ''}`;
+            }
+            notifyToast(`ADS Scope Trigger: ${state.scopeOnly ? 'Scope Only (RMB)' : 'Always Active'}`);
+            sendBridge('toggle_recoil_scope_only', { enabled: state.scopeOnly });
+        }
+
+        /* In-Game Floating HUD Overlay Controls */
+        function toggleHudVisibility() {
+            state.hudOverlay = !state.hudOverlay;
+            const btn = document.getElementById('btn-hud-overlay');
+            const lbl = document.getElementById('lbl-hud-status');
+            const previewState = document.getElementById('hud-preview-state');
+            const dashHud = document.getElementById('dash-hud-stat');
+
+            if (btn) btn.className = `toggle-switch-btn ${state.hudOverlay ? 'active' : ''}`;
+            if (lbl) lbl.textContent = state.hudOverlay ? 'ON' : 'OFF';
+            if (previewState) {
+                previewState.textContent = state.hudOverlay ? 'ACTIVE' : 'HIDDEN';
+                previewState.style.color = state.hudOverlay ? 'var(--emerald)' : 'var(--text-muted)';
+            }
+            if (dashHud) {
+                dashHud.textContent = state.hudOverlay ? 'ACTIVE' : 'OFF';
+                dashHud.style.color = state.hudOverlay ? 'var(--emerald)' : 'var(--text-muted)';
+            }
+
+            sendBridge('toggle_hud_overlay', { enabled: state.hudOverlay });
+            notifyToast(state.hudOverlay ? 'Floating HUD: Visible on Screen' : 'Floating HUD: Hidden');
+        }
+
+        function toggleHudLock() {
+            state.hudLocked = !state.hudLocked;
+            const btn = document.getElementById('btn-hud-lock');
+            const lbl = document.getElementById('lbl-hud-lock-status');
+            const dragBanner = document.getElementById('hud-drag-banner');
+            const dashSub = document.getElementById('dash-hud-sub');
+
+            if (state.hudLocked) {
+                if (btn) {
+                    btn.className = 'toggle-switch-btn';
+                    btn.innerHTML = '🔒 HUD Position: <span id="lbl-hud-lock-status">Locked</span>';
+                }
+                if (dragBanner) dragBanner.style.display = 'none';
+                if (dashSub) dashSub.textContent = 'Position: Locked';
+                notifyToast('HUD Position Locked into place');
+            } else {
+                if (btn) {
+                    btn.className = 'toggle-switch-btn active';
+                    btn.innerHTML = '🔓 HUD Position: <span id="lbl-hud-lock-status">Unlocked (Drag Now)</span>';
+                }
+                if (dragBanner) dragBanner.style.display = 'block';
+                if (dashSub) dashSub.textContent = 'Position: Unlocked (Draggable)';
+                notifyToast('HUD Unlocked! You can now drag it on your screen with the mouse.');
+            }
+
+            sendBridge('toggle_hud_lock', { locked: state.hudLocked });
+        }
+
+        /* External Social Channels Opening & Copying */
+        function openExternalUrl(url) {
+            sendBridge('open_social_link', { url: url });
+            try {
+                window.open(url, '_blank');
+            } catch (e) {}
+            notifyToast('Opening link in browser...');
+        }
+
+        function copyToClipboard(text, msg) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    notifyToast(msg || 'Copied to clipboard!');
+                }).catch(() => {
+                    fallbackCopy(text, msg);
+                });
+            } else {
+                fallbackCopy(text, msg);
+            }
+        }
+
+        function fallbackCopy(text, msg) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            notifyToast(msg || 'Copied to clipboard!');
+        }
+
+        /* Aim Assist Controls */
+        function saveCachedAimSettings() {
+            try {
+                const cfg = {
+                    fov: state.fov,
+                    fovOffsetX: state.fovOffsetX,
+                    fovOffsetY: state.fovOffsetY,
+                    sens: state.sens,
+                    smooth: state.smooth,
+                    stepSpeed: state.stepSpeed,
+                    targetBone: state.targetBone,
+                    preset: state.preset,
+                    fovOverlay: state.fovOverlay,
+                    aimWindow: state.aimWindow,
+                    device: state.device,
+                    targetFps: state.targetFps,
+                    aimKey: state.aimKey,
+                    fovColor: state.fovColor
+                };
+                localStorage.setItem('nx_aim_settings', JSON.stringify(cfg));
+            } catch (e) {}
+        }
+
+        function loadCachedAimSettings() {
+            try {
+                const raw = localStorage.getItem('nx_aim_settings');
+                if (raw) {
+                    const saved = JSON.parse(raw);
+                    if (saved && typeof saved === 'object') {
+                        if (typeof saved.fov === 'number') state.fov = saved.fov;
+                        if (typeof saved.fovOffsetX === 'number') state.fovOffsetX = saved.fovOffsetX;
+                        if (typeof saved.fovOffsetY === 'number') state.fovOffsetY = saved.fovOffsetY;
+                        if (typeof saved.sens === 'number') state.sens = saved.sens;
+                        if (typeof saved.smooth === 'number') state.smooth = saved.smooth;
+                        if (typeof saved.stepSpeed === 'number') state.stepSpeed = saved.stepSpeed;
+                        if (typeof saved.targetBone === 'string' && saved.targetBone) state.targetBone = saved.targetBone;
+                        if (typeof saved.preset === 'string' && saved.preset) state.preset = saved.preset;
+                        if (typeof saved.fovOverlay === 'boolean') state.fovOverlay = saved.fovOverlay;
+                        if (typeof saved.aimWindow === 'boolean') state.aimWindow = saved.aimWindow;
+                        if (typeof saved.device === 'string' && saved.device) state.device = saved.device;
+                        if (typeof saved.targetFps === 'number') state.targetFps = saved.targetFps;
+                        if (typeof saved.aimKey === 'string' && saved.aimKey) state.aimKey = saved.aimKey;
+                        if (typeof saved.fovColor === 'string' && saved.fovColor) state.fovColor = saved.fovColor;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function renderAimSettingsUI() {
+            const elSens = document.getElementById('val-sens');
+            const slSens = document.getElementById('slider-sens');
+            if (elSens) elSens.textContent = `${state.sens}x`;
+            if (slSens) slSens.value = state.sens;
+
+            const elSmooth = document.getElementById('val-smooth');
+            const slSmooth = document.getElementById('slider-smooth');
+            if (elSmooth) elSmooth.textContent = state.smooth;
+            if (slSmooth) slSmooth.value = state.smooth;
+
+            const elFov = document.getElementById('val-fov');
+            const slFov = document.getElementById('slider-fov');
+            if (elFov) elFov.textContent = `${state.fov} px`;
+            if (slFov) slFov.value = state.fov;
+
+            const elStep = document.getElementById('val-step');
+            const slStep = document.getElementById('slider-step');
+            if (elStep) elStep.textContent = `${state.stepSpeed} ms`;
+            if (slStep) slStep.value = state.stepSpeed;
+
+            const elFovX = document.getElementById('val-fov-x');
+            const slFovX = document.getElementById('slider-fov-x');
+            const px = state.fovOffsetX > 0 ? '+' : '';
+            if (elFovX) elFovX.textContent = `${px}${state.fovOffsetX} px`;
+            if (slFovX) slFovX.value = state.fovOffsetX;
+
+            const elFovY = document.getElementById('val-fov-y');
+            const slFovY = document.getElementById('slider-fov-y');
+            const py = state.fovOffsetY > 0 ? '+' : '';
+            if (elFovY) elFovY.textContent = `${py}${state.fovOffsetY} px`;
+            if (slFovY) slFovY.value = state.fovOffsetY;
+
+            // Target bone buttons
+            document.querySelectorAll('.bone-btn').forEach(b => b.classList.remove('active'));
+            const boneEl = document.getElementById(`bone-btn-${state.targetBone}`);
+            if (boneEl) boneEl.classList.add('active');
+
+            // Presets
+            document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('active'));
+            const presetEl = document.getElementById(`preset-${state.preset}`);
+            if (presetEl) presetEl.classList.add('active');
+
+            // FPS Target Pill Selector
+            const curFps = state.targetFps !== undefined ? state.targetFps : 40;
+            document.querySelectorAll('.fps-btn').forEach(btn => {
+                const bFps = parseInt(btn.getAttribute('data-fps'), 10);
+                btn.classList.toggle('active', bFps === curFps);
+            });
+
+            // FOV Overlay Button
+            const btnFov = document.getElementById('btn-toggle-fov-overlay');
+            const lblFov = document.getElementById('lbl-fov-overlay-status');
+            if (btnFov) btnFov.className = `toggle-switch-btn ${state.fovOverlay ? 'active' : ''}`;
+            if (lblFov) {
+                lblFov.textContent = state.fovOverlay ? 'VISIBLE' : 'HIDDEN';
+                lblFov.style.color = state.fovOverlay ? 'var(--emerald)' : 'var(--text-muted)';
+            }
+
+            // Aim Preview Window Button
+            const btnWin = document.getElementById('btn-toggle-aim-window');
+            const lblWin = document.getElementById('lbl-aim-window-status');
+            if (btnWin) btnWin.className = `toggle-switch-btn ${state.aimWindow ? 'active' : ''}`;
+            if (lblWin) lblWin.textContent = state.aimWindow ? 'ON' : 'OFF';
+
+            // Hardware Engine Switcher
+            const btnDevGpu = document.getElementById('btn-device-gpu');
+            const btnDevCpu = document.getElementById('btn-device-cpu');
+            const badgeDev = document.getElementById('chip-aim-engine-badge');
+
+            if (btnDevGpu) btnDevGpu.className = `device-btn ${state.device !== 'cpu' ? 'active' : ''}`;
+            if (btnDevCpu) btnDevCpu.className = `device-btn ${state.device === 'cpu' ? 'active' : ''}`;
+
+            if (badgeDev) {
+                if (state.device === 'cpu') {
+                    badgeDev.textContent = 'MULTI-CORE CPU';
+                    badgeDev.style.background = 'rgba(59, 130, 246, 0.12)';
+                    badgeDev.style.color = '#60a5fa';
+                    badgeDev.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                } else {
+                    badgeDev.textContent = 'GPU ACCELERATED';
+                    badgeDev.style.background = 'rgba(16, 185, 129, 0.12)';
+                    badgeDev.style.color = '#10b981';
+                    badgeDev.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                }
+            }
+
+            // Trigger Key buttons
+            const curKey = state.aimKey || 'RBUTTON_ONLY';
+            document.querySelectorAll('.key-pill-btn').forEach(b => {
+                const id = b.id.replace('key-btn-', '');
+                b.classList.toggle('active', id === curKey);
+            });
+            const badgeKey = document.getElementById('chip-aim-key-badge');
+            if (badgeKey) badgeKey.textContent = getAimKeyLabel(curKey).toUpperCase();
+
+            // FOV Color swatches
+            const curCol = (state.fovColor || '#00FFCC').toUpperCase();
+            document.querySelectorAll('.color-swatch').forEach(sw => {
+                const c = (sw.getAttribute('data-color') || '').toUpperCase();
+                sw.classList.toggle('active', c === curCol);
+            });
+            const dot = document.getElementById('fov-color-preview-dot');
+            const val = document.getElementById('chip-fov-color-val');
+            const customInput = document.getElementById('input-custom-fov-color');
+            if (dot) {
+                dot.style.background = curCol;
+                dot.style.boxShadow = `0 0 10px ${curCol}`;
+            }
+            if (val) {
+                val.textContent = curCol;
+                val.style.color = curCol;
+                val.style.borderColor = curCol;
+            }
+            if (customInput) customInput.value = curCol;
+        }
+
+        function getAimKeyLabel(k) {
+            const map = {
+                'RBUTTON_ONLY': 'Right Click',
+                'LBUTTON_ONLY': 'Left Click',
+                'RBUTTON_AND_LBUTTON': 'Scope or Fire',
+                'XBUTTON1': 'Mouse 4 (Side)',
+                'XBUTTON2': 'Mouse 5 (Side)',
+                'ALT': 'Left Alt',
+                'SHIFT': 'Shift',
+                'ALWAYS': 'Always Active'
+            };
+            return map[k] || k;
+        }
+
+        function setAimKey(key) {
+            state.aimKey = key;
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            notifyToast(`Aim Trigger: ${getAimKeyLabel(key)}`);
+            sendBridge('set_aim_key', { key: key, data: key });
+        }
+
+        function setAimColor(color) {
+            state.fovColor = color;
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            notifyToast(`FOV Color: ${color.toUpperCase()}`);
+            sendBridge('set_aim_color', { color: color, data: color });
+        }
+
+        window.applyAimSettings = function(cfg) {
+            if (!cfg) return;
+            if (typeof cfg.fov === 'number') state.fov = cfg.fov;
+            if (typeof cfg.offsetX === 'number') state.fovOffsetX = cfg.offsetX;
+            if (typeof cfg.offsetY === 'number') state.fovOffsetY = cfg.offsetY;
+            if (typeof cfg.sens === 'number') state.sens = cfg.sens;
+            if (typeof cfg.smooth === 'number') state.smooth = cfg.smooth;
+            if (typeof cfg.stepSpeed === 'number') state.stepSpeed = cfg.stepSpeed;
+            if (typeof cfg.targetBone === 'string' && cfg.targetBone) state.targetBone = cfg.targetBone;
+            if (typeof cfg.preset === 'string' && cfg.preset) state.preset = cfg.preset;
+            if (typeof cfg.showFovOverlay === 'boolean') state.fovOverlay = cfg.showFovOverlay;
+            if (typeof cfg.showWindow === 'boolean') state.aimWindow = cfg.showWindow;
+            if (typeof cfg.device === 'string' && cfg.device) state.device = cfg.device;
+            if (typeof cfg.targetFps === 'number') state.targetFps = cfg.targetFps;
+            if (typeof cfg.aimKey === 'string' && cfg.aimKey) state.aimKey = cfg.aimKey;
+            if (typeof cfg.fovColor === 'string' && cfg.fovColor) state.fovColor = cfg.fovColor;
+
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+        };
+
+        function setAimFps(fps) {
+            state.targetFps = parseInt(fps);
+            if (isNaN(state.targetFps)) state.targetFps = 40;
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            const lbl = state.targetFps === 0 ? 'Max (Unlimited)' : `${state.targetFps} FPS`;
+            notifyToast(`FPS Target: ${lbl}`);
+            sendBridge('set_aim_fps', { fps: state.targetFps });
+        }
+
+        function setAimDevice(dev) {
+            state.device = dev === 'cpu' ? 'cpu' : 'gpu';
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            notifyToast(`Inference Engine: ${state.device === 'cpu' ? 'Multi-Core CPU' : 'DirectML GPU'}`);
+            sendBridge('set_aim_device', { device: state.device });
+        }
+
+        function toggleFovScreenOverlay() {
+            state.fovOverlay = !state.fovOverlay;
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            notifyToast(`Screen FOV Overlay: ${state.fovOverlay ? 'SHOWN' : 'HIDDEN'}`);
+            sendBridge('toggle_fov_overlay', { show: state.fovOverlay });
+        }
+
+        function onFovOffsetXChange(val) {
+            state.fovOffsetX = parseInt(val) || 0;
+            const prefix = state.fovOffsetX > 0 ? '+' : '';
+            document.getElementById('val-fov-x').textContent = `${prefix}${state.fovOffsetX} px`;
+            saveCachedAimSettings();
+            sendBridge('aim_fov_offset_x', { offset: state.fovOffsetX, value: state.fovOffsetX, data: state.fovOffsetX });
+        }
+
+        function onFovOffsetYChange(val) {
+            state.fovOffsetY = parseInt(val) || 0;
+            const prefix = state.fovOffsetY > 0 ? '+' : '';
+            document.getElementById('val-fov-y').textContent = `${prefix}${state.fovOffsetY} px`;
+            saveCachedAimSettings();
+            sendBridge('aim_fov_offset_y', { offset: state.fovOffsetY, value: state.fovOffsetY, data: state.fovOffsetY });
+        }
+
+        function resetFovCenter() {
+            state.fovOffsetX = 0;
+            state.fovOffsetY = 0;
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            sendBridge('aim_fov_offset_x', { offset: 0, value: 0, data: 0 });
+            sendBridge('aim_fov_offset_y', { offset: 0, value: 0, data: 0 });
+            notifyToast('FOV Position Reset to Center (0, 0)');
+        }
+
+        function toggleFovOverlay() {
+            toggleFovScreenOverlay();
+        }
+
+        function nudgeFov(dx, dy) {
+            state.fovOffsetX = Math.max(-500, Math.min(500, (state.fovOffsetX || 0) + dx));
+            state.fovOffsetY = Math.max(-500, Math.min(500, (state.fovOffsetY || 0) + dy));
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            sendBridge('aim_fov_offset_x', { offset: state.fovOffsetX, value: state.fovOffsetX, data: state.fovOffsetX });
+            sendBridge('aim_fov_offset_y', { offset: state.fovOffsetY, value: state.fovOffsetY, data: state.fovOffsetY });
+            const px = state.fovOffsetX > 0 ? '+' : '';
+            const py = state.fovOffsetY > 0 ? '+' : '';
+            notifyToast(`FOV Position: (${px}${state.fovOffsetX}, ${py}${state.fovOffsetY}) px`);
+        }
+
+        function toggleAimPreviewWindow() {
+            state.aimWindow = !state.aimWindow;
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            notifyToast(`AI Detection Window: ${state.aimWindow ? 'SHOWN' : 'HIDDEN'}`);
+            sendBridge('toggle_aim_window', { show: state.aimWindow });
+        }
+
+        function toggleAimMasterButton() {
+            state.aimMaster = !state.aimMaster;
+            const btn = document.getElementById('btn-master-aim');
+            const lbl = document.getElementById('lbl-master-aim-status');
+            if (btn) btn.className = `toggle-switch-btn ${state.aimMaster ? 'active' : ''}`;
+            if (lbl) lbl.textContent = state.aimMaster ? 'ON' : 'OFF';
+            notifyToast(`Aim Assist: ${state.aimMaster ? 'Armed' : 'Standby'}`);
+            sendBridge('toggle_aim_master', { active: state.aimMaster });
+        }
+
+        function applyAimPreset(preset) {
+            state.preset = preset;
+            if (preset === 'smooth') setAimValues(1.2, 24.0, 35);
+            else if (preset === 'balanced') setAimValues(1.8, 15.0, 60);
+            else if (preset === 'snappy') setAimValues(2.4, 8.0, 90);
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            sendBridge('select_aim_preset', { preset });
+        }
+
+        function setAimValues(sens, smooth, step) {
+            state.sens = sens;
+            state.smooth = smooth;
+            state.stepSpeed = step;
+
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+
+            sendBridge('update_aim_settings', { sens, smooth, step, preset: state.preset });
+        }
+
+        function onSensChange(val) {
+            state.sens = parseFloat(val);
+            document.getElementById('val-sens').textContent = `${state.sens}x`;
+            saveCachedAimSettings();
+            sendBridge('aim_sens', { sens: state.sens, data: state.sens });
+        }
+
+        function onSmoothChange(val) {
+            state.smooth = parseFloat(val);
+            document.getElementById('val-smooth').textContent = state.smooth;
+            saveCachedAimSettings();
+            sendBridge('aim_smooth', { smooth: state.smooth, data: state.smooth });
+        }
+
+        function onStepChange(val) {
+            state.stepSpeed = parseInt(val);
+            document.getElementById('val-step').textContent = `${state.stepSpeed} ms`;
+            saveCachedAimSettings();
+            sendBridge('aim_step', { step: state.stepSpeed, data: state.stepSpeed });
+        }
+
+        function onFovChange(val) {
+            state.fov = parseInt(val);
+            document.getElementById('val-fov').textContent = `${state.fov} px`;
+            saveCachedAimSettings();
+            sendBridge('aim_fov', { fov: state.fov, data: state.fov });
+        }
+
+        function selectTargetBone(bone) {
+            state.targetBone = bone;
+            renderAimSettingsUI();
+            saveCachedAimSettings();
+            notifyToast(`Locking Bone: ${bone.toUpperCase()}`);
+            sendBridge('target_bone', { bone: bone, data: bone });
+        }
+
+        /* Toast Notifications */
+        function notifyToast(text) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.innerHTML = `<span>${text}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.25s ease';
+                setTimeout(() => toast.remove(), 260);
+            }, 2400);
+        }
+
+        /* Safe WebView2 C++ Bridge Messenger */
+        function sendBridge(action, payload) {
+            if (window.chrome && window.chrome.webview) {
+                let msg = { action: action, timestamp: Date.now() };
+                if (typeof payload === 'object' && payload !== null) {
+                    Object.assign(msg, payload);
+                    msg.data = payload;
+                } else {
+                    msg.data = payload;
+                    msg.value = payload;
+                    msg.offset = payload;
+                    msg.fov = payload;
+                }
+                window.chrome.webview.postMessage(msg);
+            }
+        }
+
+        /* Global F9 Hotkey Listener */
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'F9') {
+                e.preventDefault();
+                toggleRecoilMaster();
+            }
+        });
+
+        /* External C++ API Handlers */
+        window.setRecoilActive = function(isActive) {
+            state.recoilMaster = isActive;
+            const btn = document.getElementById('btn-master-recoil');
+            const lbl = document.getElementById('lbl-master-recoil-status');
+            const dashStat = document.getElementById('dash-recoil-stat');
+            const dashSub = document.getElementById('dash-recoil-sub');
+            const tbDot = document.getElementById('tb-status-dot');
+            const tbText = document.getElementById('tb-status-text');
+            const hudRecoil = document.getElementById('hud-preview-recoil');
+            const hudStatus = document.getElementById('hud-preview-status');
+
+            if (isActive) {
+                if (btn) btn.className = 'toggle-switch-btn active';
+                if (lbl) lbl.textContent = 'ON';
+                if (dashStat) { dashStat.textContent = 'ACTIVE'; dashStat.style.color = 'var(--emerald)'; }
+                if (dashSub) dashSub.textContent = 'Stabilizer Armed [F9]';
+                if (tbDot) tbDot.className = 'status-dot active';
+                if (tbText) tbText.textContent = 'Recoil Active • F9 to Pause';
+                if (hudRecoil) { hudRecoil.textContent = '[ON]'; hudRecoil.style.color = 'var(--emerald)'; }
+                if (hudStatus) { hudStatus.textContent = '[ACTIVE]'; hudStatus.style.color = 'var(--emerald)'; }
+                notifyToast('Recoil Stabilizer: ACTIVE [F9]');
+            } else {
+                if (btn) btn.className = 'toggle-switch-btn';
+                if (lbl) lbl.textContent = 'OFF';
+                if (dashStat) { dashStat.textContent = 'STANDBY'; dashStat.style.color = 'var(--text-muted)'; }
+                if (dashSub) dashSub.textContent = 'Press F9 to arm';
+                if (tbDot) tbDot.className = 'status-dot';
+                if (tbText) tbText.textContent = 'Ready • F9 Recoil Hotkey';
+                if (hudRecoil) { hudRecoil.textContent = '[OFF]'; hudRecoil.style.color = 'var(--danger)'; }
+                if (hudStatus) { hudStatus.textContent = '[STANDBY]'; hudStatus.style.color = 'var(--text-muted)'; }
+                notifyToast('Recoil Stabilizer: STANDBY [F9]');
+            }
+        };
+
+        function toggleAutoSyncProfile() {
+            state.autoSyncProfile = !state.autoSyncProfile;
+            const btn = document.getElementById('btn-auto-sync');
+            const lbl = document.getElementById('lbl-auto-sync-status');
+            if (btn) btn.className = `toggle-switch-btn ${state.autoSyncProfile ? 'active' : ''}`;
+            if (lbl) lbl.textContent = state.autoSyncProfile ? 'ON' : 'OFF';
+            notifyToast(`Auto-Switch UI: ${state.autoSyncProfile ? 'ENABLED' : 'DISABLED (Protected)'}`);
+        }
+
+        function updateDetectedHudBadge() {
+            const el = document.getElementById('hud-preview-detected');
+            if (el) {
+                const w = state.detectedWeapon || 'None';
+                const s = state.detectedScope || 'None';
+                el.textContent = `[${w} (${s})]`;
+                el.style.color = (w !== 'None' && w !== 'none' && w !== '') ? 'var(--emerald)' : 'var(--text-muted)';
+            }
+        }
+
+        window.setActiveWeapon = function(weapon) {
+            const mapped = normalizeUiWeapon(weapon);
+            state.detectedWeapon = mapped || weapon || 'None';
+            updateDetectedHudBadge();
+            if (state.autoSyncProfile && WEAPONS_DB[mapped]) {
+                selectWeapon(mapped);
+            }
+        };
+
+        window.setActiveScope = function(scope) {
+            const mapped = normalizeUiScope(scope);
+            state.detectedScope = mapped || scope || 'None';
+            updateDetectedHudBadge();
+            if (state.autoSyncProfile && mapped) {
+                selectScope(mapped);
+            }
+        };
+
+        if (window.chrome && window.chrome.webview) {
+            window.chrome.webview.addEventListener('message', function(event) {
+                const msg = event.data;
+                if (!msg) return;
+                if (msg.action === 'sync_recoil_state') {
+                    if (typeof msg.active === 'boolean') {
+                        window.setRecoilActive(msg.active);
+                    }
+                } else if (msg.action === 'sync_weapon') {
+                    if (msg.weapon && WEAPONS_DB[msg.weapon]) {
+                        window.setActiveWeapon(msg.weapon);
+                    }
+                } else if (msg.action === 'sync_scope') {
+                    if (msg.scope) {
+                        window.setActiveScope(msg.scope);
+                    }
+                }
+            });
+        }
+    
+        /* ==========================================================================
+           AUTHENTICATION & LICENSE SYSTEM JAVASCRIPT
+           ========================================================================== */
+        window.sendToCpp = sendBridge;
+
+        function toggleLicenseVisibility() {
+            const input = document.getElementById('login-key-input');
+            const openSvg = document.getElementById('login-eye-open');
+            const closedSvg = document.getElementById('login-eye-closed');
+            if (input && openSvg && closedSvg) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    openSvg.style.display = 'none';
+                    closedSvg.style.display = 'block';
+                } else {
+                    input.type = 'password';
+                    openSvg.style.display = 'block';
+                    closedSvg.style.display = 'none';
+                }
+            }
+        }
+
+        let statusTimeout = null;
+        let isAuthenticating = false;
+
+        function showStatusMessage(type, mainText, subText = '', duration = 4000) {
+            const statusMessage = document.getElementById('statusMessage');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusDesc = document.getElementById('statusDesc');
+
+            if (!statusMessage) return;
+
+            if (statusTimeout) {
+                clearTimeout(statusTimeout);
+                statusTimeout = null;
+            }
+
+            statusMessage.className = 'status-message';
+            if (statusTitle) statusTitle.textContent = mainText;
+            if (statusDesc) {
+                statusDesc.textContent = subText;
+                statusDesc.style.display = subText ? 'block' : 'none';
+            }
+
+            if (type === 'success') {
+                statusMessage.classList.add('success', 'show');
+                if (statusIcon) statusIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+            } else if (type === 'error') {
+                statusMessage.classList.add('error', 'show');
+                if (statusIcon) statusIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+            } else if (type === 'loading') {
+                statusMessage.classList.add('loading', 'show');
+                if (statusIcon) statusIcon.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+            }
+
+            if (type !== 'loading' && duration > 0) {
+                statusTimeout = setTimeout(() => {
+                    hideStatusMessage();
+                }, duration);
+            }
+        }
+
+        function hideStatusMessage() {
+            const statusMessage = document.getElementById('statusMessage');
+            if (statusMessage) statusMessage.classList.remove('show');
+        }
+
+        function submitLoginKey() {
+            const input = document.getElementById('login-key-input');
+            const submitBtn = document.getElementById('btn-login-submit');
+            const spinner = document.getElementById('login-spinner');
+            const btnText = document.getElementById('btn-login-text');
+            const statusMsg = document.getElementById('login-status-msg');
+
+            const key = input ? input.value.trim() : '';
+            if (!key) {
+                showStatusMessage('error', 'License Required', 'Please enter your product license key!');
+                if (statusMsg) {
+                    statusMsg.textContent = 'Please enter your license key!';
+                    statusMsg.className = 'login-status-msg status-error';
+                }
+                return;
+            }
+
+            if (isAuthenticating) return;
+            isAuthenticating = true;
+
+            if (submitBtn) submitBtn.disabled = true;
+            if (spinner) spinner.style.display = 'inline-block';
+            if (btnText) btnText.textContent = 'AUTHENTICATING...';
+            const btnIcon = document.getElementById('btn-login-icon');
+            if (btnIcon) btnIcon.className = 'fas fa-circle-notch fa-spin';
+            if (input) input.disabled = true;
+
+            showStatusMessage('loading', 'Verifying License Key', 'Authenticating with NX Security Server...', 0);
+            if (statusMsg) {
+                statusMsg.textContent = 'Connecting to authentication server...';
+                statusMsg.className = 'login-status-msg status-loading';
+            }
+
+            sendBridge('license_auth_request', { key: key });
+        }
+
+        // Live input handling: auto-uppercase & clear button toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const licenseInput = document.getElementById('login-key-input');
+            const accessButton = document.getElementById('btn-login-submit');
+            const buttonText = document.getElementById('btn-login-text');
+            const clearBtn = document.getElementById('clearBtn');
+
+            if (licenseInput) {
+                licenseInput.addEventListener('input', function () {
+                    const val = this.value.toUpperCase();
+                    if (this.value !== val) {
+                        this.value = val;
+                    }
+
+                    if (this.value.trim().length > 0) {
+                        if (clearBtn) clearBtn.classList.add('visible');
+                        if (!isAuthenticating && accessButton && buttonText) {
+                            accessButton.disabled = false;
+                            buttonText.textContent = 'ACCESS TOOL';
+                        const btnIcon = document.getElementById('btn-login-icon');
+                        if (btnIcon) btnIcon.className = 'fas fa-arrow-right';
+                        }
+                    } else {
+                        if (clearBtn) clearBtn.classList.remove('visible');
+                        if (!isAuthenticating && accessButton && buttonText) {
+                            accessButton.disabled = true;
+                            buttonText.textContent = 'ENTER LICENSE KEY';
+                        const btnIcon = document.getElementById('btn-login-icon');
+                        if (btnIcon) btnIcon.className = 'fas fa-bolt';
+                        }
+                    }
+                });
+
+                licenseInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        submitLoginKey();
+                    }
+                });
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    if (licenseInput) {
+                        licenseInput.value = '';
+                        licenseInput.focus();
+                    }
+                    clearBtn.classList.remove('visible');
+                    if (!isAuthenticating && accessButton && buttonText) {
+                        accessButton.disabled = true;
+                        buttonText.textContent = 'ENTER LICENSE KEY';
+                    }
+                });
+            }
+        });
+
+        // Backend callback on login result
+        window.NXLoginCallback = function(success, message, key, subscription, expiry) {
+            const submitBtn = document.getElementById('btn-login-submit');
+            const spinner = document.getElementById('login-spinner');
+            const btnText = document.getElementById('btn-login-text');
+            const statusMsg = document.getElementById('login-status-msg');
+            const loginScreen = document.getElementById('login-screen');
+            const input = document.getElementById('login-key-input');
+            const userPill = document.getElementById('tb-user-pill');
+            const userSub = document.getElementById('tb-user-sub');
+            const userExp = document.getElementById('tb-user-exp');
+
+            isAuthenticating = false;
+            if (input) input.disabled = false;
+            if (spinner) spinner.style.display = 'none';
+
+            if (success) {
+                if (btnText) btnText.textContent = 'AUTHORIZED';
+                const btnIcon = document.getElementById('btn-login-icon');
+                if (btnIcon) btnIcon.className = 'fas fa-check-circle';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('authorized');
+                }
+                showStatusMessage('success', 'License Verified Successfully!', 'Welcome to NX AI • Launching interface...', 4000);
+                if (statusMsg) {
+                    statusMsg.textContent = message || 'License activated successfully!';
+                    statusMsg.className = 'login-status-msg status-success';
+                }
+
+                // Update Titlebar user pill
+                let plan = subscription || 'PRO';
+                let expStr = 'Active';
+                if (expiry && /^\d+$/.test(expiry) && expiry !== '0') {
+                    const expiryMs = parseInt(expiry) * 1000;
+                    const diffDays = Math.ceil((expiryMs - Date.now()) / (1000 * 60 * 60 * 24));
+                    if (diffDays > 0) {
+                        expStr = `${diffDays}d remaining`;
+                    } else {
+                        expStr = 'Expired';
+                    }
+                } else if (expiry === '0' || !expiry) {
+                    expStr = 'Lifetime';
+                }
+
+                if (userSub) userSub.textContent = plan.toUpperCase();
+                if (userExp) userExp.textContent = expStr;
+                if (userPill) userPill.style.display = 'inline-flex';
+
+                setTimeout(() => {
+                    if (loginScreen) loginScreen.classList.add('fade-out');
+                    hideStatusMessage();
+                }, 1200);
+            } else {
+                if (submitBtn) submitBtn.disabled = false;
+                if (btnText) {
+                    btnText.textContent = (input && input.value.trim().length > 0) ? 'ACCESS TOOL' : 'ENTER LICENSE KEY';
+                }
+                showStatusMessage('error', 'Invalid or Expired License Key', message || 'Please verify your key or contact support on Discord', 5000);
+                if (statusMsg) {
+                    statusMsg.textContent = message || 'Invalid license key!';
+                    statusMsg.className = 'login-status-msg status-error';
+                }
+                if (userPill) userPill.style.display = 'none';
+                if (input) input.focus();
+            }
+        };
+
+        window.NXAutoLoginStart = function() {
+            const submitBtn = document.getElementById('btn-login-submit');
+            const spinner = document.getElementById('login-spinner');
+            const btnText = document.getElementById('btn-login-text');
+            const statusMsg = document.getElementById('login-status-msg');
+            const input = document.getElementById('login-key-input');
+
+            isAuthenticating = true;
+            if (input) input.disabled = true;
+            if (submitBtn) submitBtn.disabled = true;
+            if (spinner) spinner.style.display = 'inline-block';
+            if (btnText) btnText.textContent = 'AUTHENTICATING...';
+            showStatusMessage('loading', 'Checking Saved License', 'Authenticating device credentials...', 0);
+            if (statusMsg) {
+                statusMsg.textContent = 'Verifying saved license key with server...';
+                statusMsg.className = 'login-status-msg status-loading';
+            }
+        };
+
+        window.NXReadyForLogin = function() {
+            const submitBtn = document.getElementById('btn-login-submit');
+            const spinner = document.getElementById('login-spinner');
+            const btnText = document.getElementById('btn-login-text');
+            const statusMsg = document.getElementById('login-status-msg');
+            const input = document.getElementById('login-key-input');
+
+            isAuthenticating = false;
+            if (input) input.disabled = false;
+            if (submitBtn) submitBtn.disabled = true;
+            if (spinner) spinner.style.display = 'none';
+            if (btnText) btnText.textContent = 'ENTER LICENSE KEY';
+            if (statusMsg) {
+                statusMsg.textContent = 'Please enter your license key to continue.';
+                statusMsg.className = 'login-status-msg';
+            }
+        };
+
+        window.NXForceShowLogin = function(msg) {
+            const loginScreen = document.getElementById('login-screen');
+            const submitBtn = document.getElementById('btn-login-submit');
+            const spinner = document.getElementById('login-spinner');
+            const btnText = document.getElementById('btn-login-text');
+            const statusMsg = document.getElementById('login-status-msg');
+            const userPill = document.getElementById('tb-user-pill');
+            const input = document.getElementById('login-key-input');
+
+            isAuthenticating = false;
+            if (loginScreen) {
+                loginScreen.classList.remove('fade-out');
+                loginScreen.style.display = 'flex';
+            }
+            if (input) {
+                input.disabled = false;
+                input.value = '';
+            }
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('authorized');
+            }
+            if (spinner) spinner.style.display = 'none';
+            if (btnText) btnText.textContent = 'ENTER LICENSE KEY';
+            showStatusMessage('error', 'Session Required', msg || 'Authentication required! Please enter license.');
+            if (statusMsg) {
+                statusMsg.textContent = msg || 'Authentication required! Please enter license.';
+                statusMsg.className = 'login-status-msg status-error';
+            }
+            if (userPill) userPill.style.display = 'none';
+        };
+
+        window.requestLogout = function() {
+            sendBridge('logout_request', {});
+            window.NXForceShowLogin('Logged out successfully.');
+        };
+    </script>
+</body>
+</html>
